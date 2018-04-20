@@ -4,42 +4,14 @@ namespace FuzzySharp.SimilarityRatio.Algorithm
 {
     public abstract class AlgorithmBase : IRatioCalculator
     {
-        protected IStringPreprocessor Preprocessor;
+        internal abstract int RunAlgorithm(string input1, string input2);
 
-        protected AlgorithmBase()
+        public int Calculate(string input1, string input2, PreprocessMode preprocessMode = PreprocessMode.Full)
         {
-            Preprocessor = new DefaultStringPreprocessor();
-            
-        }
-
-        protected AlgorithmBase(IStringPreprocessor preprocessor)
-        {
-            Preprocessor = preprocessor;
-        }
-
-        public int Calculate(string input1, string input2) => Calculate(input1, input2, Preprocessor);
-        public abstract int Calculate(string input1, string input2, IStringPreprocessor preprocessor);
-
-        public AlgorithmBase With(IStringPreprocessor stringProcessor)
-        {
-            SetStringProcessor(stringProcessor);
-            return this;
-        }
-
-        public AlgorithmBase WithNoProcessor()
-        {
-            SetStringProcessor(new NoPreprocess());
-            return this;
-        }
-
-        protected virtual void SetStringProcessor(IStringPreprocessor stringProcessor)
-        {
-            Preprocessor = stringProcessor;
-        }
-
-        public IStringPreprocessor GetStringProcessor()
-        {
-            return Preprocessor;
+            var preprocessor = StringPreprocessorFactory.GetPreprocessor(preprocessMode);
+            input1 = preprocessor(input1);
+            input2 = preprocessor(input2);
+            return RunAlgorithm(input1, input2);
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using FuzzySharp.PreProcess;
+using FuzzySharp.SimilarityRatio.Algorithm.StrategySensitive;
+using FuzzySharp.SimilarityRatio.Strategy;
 
 namespace FuzzySharp.SimilarityRatio.Algorithm.Composite
 {
@@ -10,17 +12,20 @@ namespace FuzzySharp.SimilarityRatio.Algorithm.Composite
         public static double PARTIAL_SCALE = .90;
         public static bool TRY_PARTIALS = true;
 
-        public override int Calculate(string input1, string input2, IStringPreprocessor preprocessor)
-        {
-            input1 = preprocessor.Process(input1);
-            input2 = preprocessor.Process(input2);
+        #region Private Fields
+        private IStrategySensitiveAlgorithm _simpleRatio = new SimpleRatioAlgorithm();
+        private IStrategySensitiveAlgorithm _tokenSetRatio = new TokenSetAlgorithm();
+        private IStrategySensitiveAlgorithm _tokenSortRatio = new TokenSortAlgorithm();
+        #endregion
 
+        internal override int RunAlgorithm(string input1, string input2)
+        {
             int len1 = input1.Length;
             int len2 = input2.Length;
 
             if (len1 == 0 || len2 == 0) { return 0; }
 
-            bool tryPartials = TRY_PARTIALS;
+            bool   tryPartials  = TRY_PARTIALS;
             double unbaseScale  = UNBASE_SCALE;
             double partialScale = PARTIAL_SCALE;
 
@@ -35,22 +40,23 @@ namespace FuzzySharp.SimilarityRatio.Algorithm.Composite
 
             if (tryPartials)
             {
-                double partial    = Fuzz.PartialRatio(input1, input2, preprocessor) * partialScale;
-                double partialSor = Fuzz.TokenSortPartialRatio(input1, input2, preprocessor) * unbaseScale * partialScale;
-                double partialSet = Fuzz.TokenSetPartialRatio(input1, input2, preprocessor) * unbaseScale * partialScale;
-                double partialInitial = Fuzz.TokenInitialismRatio(input1, input2, preprocessor) * unbaseScale * partialScale;
+                double partial    = _simpleRatio.Calculate(input1, input2, RatioStrategyType.Partial)                  * partialScale;
+                double partialSor = _tokenSortRatio.Calculate(input1, input2, RatioStrategyType.Partial) * unbaseScale * partialScale;
+                double partialSet = _tokenSetRatio.Calculate(input1, input2, RatioStrategyType.Partial) * unbaseScale  * partialScale;
+                //double partialInitial = Fuzz.TokenInitialismRatio(input1, input2, preprocessor) * unbaseScale * partialScale;
                 //double partialDiff = Hair.TokenDifferenceRatio(input1, input2) * unbaseScale * partialScale;
 
-                return (int) Math.Round(new[] { baseRatio, partial, partialSor, partialSet, partialInitial }.Max());
+                return (int) Math.Round(new[] { baseRatio, partial, partialSor, partialSet /*, partialInitial*/ }.Max());
             }
             else
             {
                 double tokenSort = Fuzz.TokenSortRatio(input1, input2, preprocessor) * unbaseScale;
-                double tokenSet  = Fuzz.TokenSetRatio(input1, input2, preprocessor) * unbaseScale;
+                double tokenSet  = Fuzz.TokenSetRatio(input1, input2, preprocessor)  * unbaseScale;
                 //double diffSet = Hair.TokenDifferenceRatio(input1, input2) * unbaseScale;
 
-                return (int) Math.Round(new[] { baseRatio, tokenSort, tokenSet }.Max());
+                return (int)Math.Round(new[] { baseRatio, tokenSort, tokenSet }.Max());
             }
         }
+
     }
 }

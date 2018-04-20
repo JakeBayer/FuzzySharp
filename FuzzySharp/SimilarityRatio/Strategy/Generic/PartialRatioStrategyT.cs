@@ -5,7 +5,7 @@ using FuzzySharp.Edits;
 
 namespace FuzzySharp.SimilarityRatio.Strategy.Generic
 {
-    public class PartialRatioStrategy<T> : IRatioStrategy<T> where T : IEquatable<T>
+    internal class PartialRatioStrategy<T> : IRatioStrategy<T> where T : IEquatable<T>
     {
         public int Calculate(T[] input1, T[] input2)
         {

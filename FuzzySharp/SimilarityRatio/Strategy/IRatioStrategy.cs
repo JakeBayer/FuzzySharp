@@ -1,6 +1,6 @@
 ﻿namespace FuzzySharp.SimilarityRatio.Strategy
 {
-    public interface IRatioStrategy
+    internal interface IRatioStrategy
     {
         int Calculate(string input1, string input2);
     }

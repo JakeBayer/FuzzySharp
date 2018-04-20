@@ -9,23 +9,8 @@ namespace FuzzySharp.SimilarityRatio.Algorithm.StrategySensitive
 {
     public class TokenSetAlgorithm : StrategySensitiveAlgorithmBase
     {
-        public TokenSetAlgorithm(IStringPreprocessor preprocessor) : base(preprocessor) { }
-
-        public TokenSetAlgorithm() { }
-
-        public TokenSetAlgorithm(IRatioStrategy strategy) : base(strategy)
+        internal override int Calculate(string input1, string input2, IRatioStrategy strategy)
         {
-        }
-
-        public TokenSetAlgorithm(IRatioStrategy strategy, IStringPreprocessor preprocessor) : base(strategy, preprocessor)
-        {
-        }
-
-        public override int Calculate(string input1, string input2, IRatioStrategy strategy, IStringPreprocessor preprocessor)
-        {
-            input1 = preprocessor.Process(input1);
-            input2 = preprocessor.Process(input2);
-
             var tokens1 = new HashSet<string>(Regex.Split(input1, @"\s+"));
             var tokens2 = new HashSet<string>(Regex.Split(input2, @"\s+"));
 

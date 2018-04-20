@@ -2,7 +2,7 @@
 
 namespace FuzzySharp.SimilarityRatio.Strategy.Generic
 {
-    public class DefaultRatioStrategy<T> : IRatioStrategy<T> where T : IEquatable<T>
+    internal class DefaultRatioStrategy<T> : IRatioStrategy<T> where T : IEquatable<T>
     {
         public int Calculate(T[] input1, T[] input2)
         {

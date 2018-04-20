@@ -6,7 +6,7 @@ using FuzzySharp.PreProcess;
 
 namespace FuzzySharp.SimilarityRatio.Strategy
 {
-    public class PartialRatioStrategy : IRatioStrategy
+    internal class PartialRatioStrategy : IRatioStrategy
     {
         public int Calculate(string input1, string input2)
         {

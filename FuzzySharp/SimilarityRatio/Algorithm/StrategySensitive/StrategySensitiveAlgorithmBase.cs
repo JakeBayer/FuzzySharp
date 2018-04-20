@@ -1,57 +1,48 @@
-﻿using FuzzySharp.PreProcess;
+﻿using System;
+using System.Collections.Generic;
+using FuzzySharp.PreProcess;
 using FuzzySharp.SimilarityRatio.Strategy;
 
 namespace FuzzySharp.SimilarityRatio.Algorithm.StrategySensitive
 {
-    public abstract class StrategySensitiveAlgorithmBase : AlgorithmBase, IStrategySensitiveAlgorithm
+    public abstract class StrategySensitiveAlgorithmBase : IStrategySensitiveAlgorithm
     {
-        protected IRatioStrategy Strategy;
-        protected StrategySensitiveAlgorithmBase()
+        private static readonly Dictionary<RatioStrategyType, IRatioStrategy> s_ratioStrategyMap = new Dictionary<RatioStrategyType, IRatioStrategy>
         {
-            Strategy = new DefaultRatioStrategy();
+            [RatioStrategyType.Default] = new DefaultRatioStrategy(),
+            [RatioStrategyType.Partial] = new PartialRatioStrategy(),
+        };
+
+        internal abstract int Calculate(string input1, string input2, IRatioStrategy strategy);
+
+        public int Calculate(string input1, string input2, PreprocessMode preprocessMode = PreprocessMode.Full, RatioStrategyType strategyType = RatioStrategyType.Default)
+        {
+            var preprocessor = StringPreprocessorFactory.GetPreprocessor(preprocessMode);
+            input1 = preprocessor(input1);
+            input2 = preprocessor(input2);
+            return Calculate(input1, input2, strategyType);
         }
 
-        protected StrategySensitiveAlgorithmBase(IStringPreprocessor preprocessor) : base(preprocessor)
+        public int Calculate(string input1, string input2, RatioStrategyType strategyType = RatioStrategyType.Default)
         {
-            Strategy = new DefaultRatioStrategy();
+            return Calculate(input1, input2, GetRatioStrategy(strategyType));
         }
 
-        protected StrategySensitiveAlgorithmBase(IRatioStrategy strategy)
+        private static IRatioStrategy GetRatioStrategy(RatioStrategyType strategyType)
         {
-            Strategy = strategy;
+            try
+            {
+                return s_ratioStrategyMap[strategyType];
+            }
+            catch (Exception e)
+            {
+                throw new InvalidOperationException($"Don't know how to use ratio strategy type {strategyType}");
+            }
         }
 
-        protected StrategySensitiveAlgorithmBase(IRatioStrategy strategy, IStringPreprocessor preprocessor) : base(preprocessor)
+        public int Calculate(string input1, string input2, PreprocessMode preprocessMode = PreprocessMode.Full)
         {
-            Strategy = strategy;
-        }
-
-        public abstract int Calculate(string input1, string input2, IRatioStrategy strategy, IStringPreprocessor preprocessor);
-
-        public int Calculate(string input1, string input2, IRatioStrategy strategy)
-        {
-            return Calculate(input1, input2, strategy, GetStringProcessor());
-        }
-
-        public override int Calculate(string input1, string input2, IStringPreprocessor preprocessor)
-        {
-            return Calculate(input1, input2, GetRatioStrategy(), preprocessor);
-        }
-
-        public StrategySensitiveAlgorithmBase With(IRatioStrategy strategy)
-        {
-            SetRatioStrategy(strategy);
-            return this;
-        }
-
-        public void SetRatioStrategy(IRatioStrategy strategy)
-        {
-            Strategy = strategy;
-        }
-
-        public IRatioStrategy GetRatioStrategy()
-        {
-            return Strategy;
+            throw new NotImplementedException();
         }
     }
 }
