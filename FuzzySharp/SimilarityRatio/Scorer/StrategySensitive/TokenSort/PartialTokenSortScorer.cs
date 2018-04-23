@@ -1,7 +1,7 @@
 ﻿using System;
 using FuzzySharp.SimilarityRatio.Strategy;
 
-namespace FuzzySharp.SimilarityRatio.Algorithm.StrategySensitive.TokenSort
+namespace FuzzySharp.SimilarityRatio.Scorer.StrategySensitive.TokenSort
 {
     public class PartialTokenSortScorer : TokenSortScorerBase
     {

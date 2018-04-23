@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using System.Text.RegularExpressions;
 using FuzzySharp.PreProcess;
-using FuzzySharp.SimilarityRatio.Algorithm.StrategySensitive.Generic;
+using FuzzySharp.SimilarityRatio.Scorer.StrategySensitive.Generic;
 
-namespace FuzzySharp.SimilarityRatio.Algorithm.StrategySensitive
+namespace FuzzySharp.SimilarityRatio.Scorer.StrategySensitive.TokenDifference
 {
     public abstract class TokenDifferenceScorerBase : StrategySensitiveScorerBase<string>, IRatioScorer
     {

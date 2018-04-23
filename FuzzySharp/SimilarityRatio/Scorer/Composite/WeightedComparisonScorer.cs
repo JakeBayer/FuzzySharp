@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace FuzzySharp.SimilarityRatio.Algorithm.Composite
+namespace FuzzySharp.SimilarityRatio.Scorer.Composite
 {
     public class WeightedComparisonScorer : ScorerBase
     {

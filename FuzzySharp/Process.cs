@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 using FuzzySharp.Extractor;
 using FuzzySharp.PreProcess;
 using FuzzySharp.SimilarityRatio;
-using FuzzySharp.SimilarityRatio.Algorithm.Composite;
+using FuzzySharp.SimilarityRatio.Scorer;
+using FuzzySharp.SimilarityRatio.Scorer.Composite;
 
 namespace FuzzySharp
 {

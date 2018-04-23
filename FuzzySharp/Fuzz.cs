@@ -1,15 +1,12 @@
 ﻿using FuzzySharp.PreProcess;
 using FuzzySharp.SimilarityRatio;
-using FuzzySharp.SimilarityRatio.Algorithm.Composite;
-using FuzzySharp.SimilarityRatio.Algorithm.StrategySensitive;
-using FuzzySharp.SimilarityRatio.Algorithm.StrategySensitive.Simple;
-using FuzzySharp.SimilarityRatio.Algorithm.StrategySensitive.TokenAbbreviation;
-using FuzzySharp.SimilarityRatio.Algorithm.StrategySensitive.TokenDifference;
-using FuzzySharp.SimilarityRatio.Algorithm.StrategySensitive.TokenInitialism;
-using FuzzySharp.SimilarityRatio.Algorithm.StrategySensitive.TokenSet;
-using FuzzySharp.SimilarityRatio.Algorithm.StrategySensitive.TokenSort;
-using FuzzySharp.SimilarityRatio.Strategy;
-using FuzzySharp.SimilarityRatio.Strategy.Generic;
+using FuzzySharp.SimilarityRatio.Scorer.Composite;
+using FuzzySharp.SimilarityRatio.Scorer.StrategySensitive.Simple;
+using FuzzySharp.SimilarityRatio.Scorer.StrategySensitive.TokenAbbreviation;
+using FuzzySharp.SimilarityRatio.Scorer.StrategySensitive.TokenDifference;
+using FuzzySharp.SimilarityRatio.Scorer.StrategySensitive.TokenInitialism;
+using FuzzySharp.SimilarityRatio.Scorer.StrategySensitive.TokenSet;
+using FuzzySharp.SimilarityRatio.Scorer.StrategySensitive.TokenSort;
 
 namespace FuzzySharp
 {

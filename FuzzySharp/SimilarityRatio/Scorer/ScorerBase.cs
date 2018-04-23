@@ -1,6 +1,6 @@
 ﻿using FuzzySharp.PreProcess;
 
-namespace FuzzySharp.SimilarityRatio.Algorithm
+namespace FuzzySharp.SimilarityRatio.Scorer
 {
     public abstract class ScorerBase : IRatioScorer
     {

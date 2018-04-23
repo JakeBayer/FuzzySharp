@@ -1,7 +1,7 @@
 ﻿using System;
 using FuzzySharp.SimilarityRatio.Strategy;
 
-namespace FuzzySharp.SimilarityRatio.Algorithm.StrategySensitive.TokenAbbreviation
+namespace FuzzySharp.SimilarityRatio.Scorer.StrategySensitive.TokenAbbreviation
 {
     public class TokenAbbreviationScorer : TokenAbbreviationScorerBase
     {

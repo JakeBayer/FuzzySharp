@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Text;
+using FuzzySharp.SimilarityRatio.Scorer;
 
 namespace FuzzySharp.SimilarityRatio
 {

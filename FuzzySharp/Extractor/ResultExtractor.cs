@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using FuzzySharp.Extensions;
-using FuzzySharp.SimilarityRatio;
+using FuzzySharp.SimilarityRatio.Scorer;
 
 namespace FuzzySharp.Extractor
 {
