@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace FuzzySharp.SimilarityRatio.Scorer.StrategySensitive.TokenInitialism
+namespace FuzzySharp.SimilarityRatio.Scorer.StrategySensitive
 {
     public abstract class TokenInitialismScorerBase : StrategySensitiveScorerBase
     {

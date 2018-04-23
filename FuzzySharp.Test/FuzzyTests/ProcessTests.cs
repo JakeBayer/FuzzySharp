@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using FuzzySharp.SimilarityRatio;
-using FuzzySharp.SimilarityRatio.Scorer.StrategySensitive.Simple;
+using FuzzySharp.SimilarityRatio.Scorer.StrategySensitive;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FuzzySharp.Test.FuzzyTests

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace FuzzySharp.SimilarityRatio.Scorer.StrategySensitive.TokenSet
+namespace FuzzySharp.SimilarityRatio.Scorer.StrategySensitive
 {
     public abstract class TokenSetScorerBase : StrategySensitiveScorerBase
     {

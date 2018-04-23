@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuzzySharp", "FuzzySharp\FuzzySharp.csproj", "{348B90DA-DA44-45AD-B857-D3A69D05AE46}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FuzzySharp", "FuzzySharp\FuzzySharp.csproj", "{348B90DA-DA44-45AD-B857-D3A69D05AE46}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuzzySharp.Test", "FuzzySharp.Test\FuzzySharp.Test.csproj", "{08996DDB-7649-4495-BF4D-91C400EC1AC9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FuzzySharp.Test", "FuzzySharp.Test\FuzzySharp.Test.csproj", "{08996DDB-7649-4495-BF4D-91C400EC1AC9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

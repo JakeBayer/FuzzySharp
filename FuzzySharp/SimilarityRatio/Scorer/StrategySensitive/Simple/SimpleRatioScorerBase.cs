@@ -1,4 +1,4 @@
-﻿namespace FuzzySharp.SimilarityRatio.Scorer.StrategySensitive.Simple
+﻿namespace FuzzySharp.SimilarityRatio.Scorer.StrategySensitive
 {
     public abstract class SimpleRatioScorerBase : StrategySensitiveScorerBase
     {
