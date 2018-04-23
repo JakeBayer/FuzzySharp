@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using FuzzySharp.Edits;
-using FuzzySharp.PreProcess;
 
 namespace FuzzySharp.SimilarityRatio.Strategy
 {
-    public class PartialRatioStrategy : IRatioStrategy
+    internal class PartialRatioStrategy
     {
-        public int Calculate(string input1, string input2)
+        public static int Calculate(string input1, string input2)
         {
             string shorter;
             string longer;

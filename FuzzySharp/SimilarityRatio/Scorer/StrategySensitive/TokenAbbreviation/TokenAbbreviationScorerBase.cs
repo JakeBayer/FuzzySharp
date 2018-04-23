@@ -1,35 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using FuzzySharp.PreProcess;
-using FuzzySharp.SimilarityRatio.Strategy;
 using FuzzySharp.Utils;
 
-namespace FuzzySharp.SimilarityRatio.Algorithm.StrategySensitive
+namespace FuzzySharp.SimilarityRatio.Scorer.StrategySensitive.TokenAbbreviation
 {
-    public class TokenAbbreviationAlgorithm : StrategySensitiveAlgorithmBase
+    public abstract class TokenAbbreviationScorerBase : StrategySensitiveScorerBase
     {
-        public TokenAbbreviationAlgorithm()
+        public override int Score(string input1, string input2)
         {
-        }
-
-        public TokenAbbreviationAlgorithm(IStringPreprocessor preprocessor) : base(preprocessor)
-        {
-        }
-
-        public TokenAbbreviationAlgorithm(IRatioStrategy strategy) : base(strategy)
-        {
-        }
-
-        public TokenAbbreviationAlgorithm(IRatioStrategy strategy, IStringPreprocessor preprocessor) : base(strategy, preprocessor)
-        {
-        }
-
-        public override int Calculate(string input1, string input2, IRatioStrategy strategy, IStringPreprocessor preprocessor)
-        {
-            input1 = preprocessor.Process(input1);
-            input2 = preprocessor.Process(input2);
-
             string shorter;
             string longer;
 
@@ -85,7 +64,7 @@ namespace FuzzySharp.SimilarityRatio.Algorithm.StrategySensitive
                     var i2 = fewerTokens[i];
                     if (StringContainsInOrder(i1, i2)) // must be at least twice as long
                     {
-                        var score = strategy.Calculate(i1, i2);
+                        var score = Scorer(i1, i2);
                         sum += score;
                     }
                 }
