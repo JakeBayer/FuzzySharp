@@ -1,13 +1,11 @@
 ﻿using System.Linq;
 using System.Text.RegularExpressions;
-using FuzzySharp.PreProcess;
-using FuzzySharp.SimilarityRatio.Strategy;
 
 namespace FuzzySharp.SimilarityRatio.Algorithm.StrategySensitive
 {
-    public class TokenInitialismAlgorithm : StrategySensitiveAlgorithmBase
+    public abstract class TokenInitialismScorerBase : StrategySensitiveScorerBase
     {
-        internal override int Calculate(string input1, string input2, IRatioStrategy strategy)
+        public override int Score(string input1, string input2)
         {
             string shorter;
             string longer;
@@ -30,7 +28,7 @@ namespace FuzzySharp.SimilarityRatio.Algorithm.StrategySensitive
 
             var initials = Regex.Split(longer, @"\s+").Select(s => s[0]);
 
-            return strategy.Calculate(string.Join("", initials), shorter);
+            return Scorer(string.Join("", initials), shorter);
         }
     }
 }

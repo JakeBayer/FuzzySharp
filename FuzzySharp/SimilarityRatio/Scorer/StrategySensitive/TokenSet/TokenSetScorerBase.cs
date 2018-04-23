@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using FuzzySharp.PreProcess;
-using FuzzySharp.SimilarityRatio.Strategy;
 
 namespace FuzzySharp.SimilarityRatio.Algorithm.StrategySensitive
 {
-    public class TokenSetAlgorithm : StrategySensitiveAlgorithmBase
+    public abstract class TokenSetScorerBase : StrategySensitiveScorerBase
     {
-        internal override int Calculate(string input1, string input2, IRatioStrategy strategy)
+        public override int Score(string input1, string input2)
         {
             var tokens1 = new HashSet<string>(Regex.Split(input1, @"\s+"));
             var tokens2 = new HashSet<string>(Regex.Split(input2, @"\s+"));
@@ -20,9 +18,9 @@ namespace FuzzySharp.SimilarityRatio.Algorithm.StrategySensitive
 
             return new[]
             {
-                strategy.Calculate(sortedIntersection, sortedDiff1To2),
-                strategy.Calculate(sortedIntersection, sortedDiff2To1),
-                strategy.Calculate(sortedDiff1To2,     sortedDiff2To1)
+                Scorer(sortedIntersection, sortedDiff1To2),
+                Scorer(sortedIntersection, sortedDiff2To1),
+                Scorer(sortedDiff1To2,     sortedDiff2To1)
             }.Max();
         }
     }

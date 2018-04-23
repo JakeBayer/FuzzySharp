@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using FuzzySharp.SimilarityRatio.Algorithm.StrategySensitive;
+using FuzzySharp.SimilarityRatio;
+using FuzzySharp.SimilarityRatio.Algorithm.StrategySensitive.Simple;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FuzzySharp.Test.FuzzyTests
@@ -10,27 +9,27 @@ namespace FuzzySharp.Test.FuzzyTests
     [TestClass]
     public class ProcessTests
     {
-        private string   s1;
-        private string   s1a;
-        private string   s2;
-        private string   s3;
-        private string   s4;
-        private string   s5;
-        private string   s6;
-        private string[] cirque_strings;
-        private string[] baseball_strings;
+        private string   _s1;
+        private string   _s1A;
+        private string   _s2;
+        private string   _s3;
+        private string   _s4;
+        private string   _s5;
+        private string   _s6;
+        private string[] _cirqueStrings;
+        private string[] _baseballStrings;
 
         [TestInitialize]
         public void Setup()
         {
-            s1  = "new york mets";
-            s1a = "new york mets";
-            s2  = "new YORK mets";
-            s3  = "the wonderful new york mets";
-            s4  = "new york mets vs atlanta braves";
-            s5  = "atlanta braves vs new york mets";
-            s6  = "new york mets - atlanta braves";
-            cirque_strings = new[]
+            _s1  = "new york mets";
+            _s1A = "new york mets";
+            _s2  = "new YORK mets";
+            _s3  = "the wonderful new york mets";
+            _s4  = "new york mets vs atlanta braves";
+            _s5  = "atlanta braves vs new york mets";
+            _s6  = "new york mets - atlanta braves";
+            _cirqueStrings = new[]
             {
                 "cirque du soleil - zarkana - las vegas",
                 "cirque du soleil ",
@@ -40,7 +39,7 @@ namespace FuzzySharp.Test.FuzzyTests
                 "zarakana - cirque du soleil - bellagio"
             };
 
-            baseball_strings = new[]
+            _baseballStrings = new[]
             {
                 "new york mets vs chicago cubs",
                 "chicago cubs vs chicago white sox",
@@ -50,43 +49,43 @@ namespace FuzzySharp.Test.FuzzyTests
         }
 
         [TestMethod]
-        public void testGetBestChoice1()
+        public void TestGetBestChoice1()
         {
             var query = "new york mets at atlanta braves";
-            var best  = Process.ExtractOne(query, baseball_strings);
+            var best  = Process.ExtractOne(query, _baseballStrings);
             Assert.AreEqual(best.Value, "braves vs mets");
 
         }
 
         [TestMethod]
-        public void testGetBestChoice2()
+        public void TestGetBestChoice2()
         {
             var query = "philadelphia phillies at atlanta braves";
-            var best  = Process.ExtractOne(query, baseball_strings);
-            Assert.AreEqual(best.Value, baseball_strings[2]);
+            var best  = Process.ExtractOne(query, _baseballStrings);
+            Assert.AreEqual(best.Value, _baseballStrings[2]);
 
         }
 
         [TestMethod]
-        public void testGetBestChoice3()
+        public void TestGetBestChoice3()
         {
             var query = "atlanta braves at philadelphia phillies";
-            var best  = Process.ExtractOne(query, baseball_strings);
-            Assert.AreEqual(best.Value, baseball_strings[2]);
+            var best  = Process.ExtractOne(query, _baseballStrings);
+            Assert.AreEqual(best.Value, _baseballStrings[2]);
 
         }
 
         [TestMethod]
-        public void testGetBestChoice4()
+        public void TestGetBestChoice4()
         {
             var query = "chicago cubs vs new york mets";
-            var best  = Process.ExtractOne(query, baseball_strings);
-            Assert.AreEqual(best.Value, baseball_strings[0]);
+            var best  = Process.ExtractOne(query, _baseballStrings);
+            Assert.AreEqual(best.Value, _baseballStrings[0]);
 
         }
 
         [TestMethod]
-        public void testWithProcessor()
+        public void TestWithProcessor()
         {
             var events = new[]
             {
@@ -96,13 +95,12 @@ namespace FuzzySharp.Test.FuzzyTests
             };
             var query = new[] { "new york mets vs chicago cubs", "CitiField", "2017-03-19", "8pm" };
 
-            var best = Process.ExtractOne(query[0], events.Select(s => s[0]));
-            Assert.AreEqual(best.Value, events[0][0]);
-
+            var best = Process.ExtractOne(query, events, strings => strings[0]);
+            Assert.AreEqual(best.Value, events[0]);
         }
 
         [TestMethod]
-        public void testWithScorer()
+        public void TestWithScorer()
         {
             var choices = new[]
             {
@@ -112,7 +110,7 @@ namespace FuzzySharp.Test.FuzzyTests
                 "new york yankees vs boston red sox"
             };
 
-            var choices_dict = new Dictionary<int, string>
+            var choicesDict = new Dictionary<int, string>
             {
                 [1] = "new york mets vs chicago cubs",
                 [2] = "chicago cubs vs chicago white sox",
@@ -123,24 +121,24 @@ namespace FuzzySharp.Test.FuzzyTests
             // in this hypothetical example we care about ordering, so we use quick ratio
             var query = "new york mets at chicago cubs";
 
-// first, as an example, the normal way would select the "more
-// 'complete' match of choices[1]"
+            // first, as an example, the normal way would select the "more
+            // 'complete' match of choices[1]"
 
             var best = Process.ExtractOne(query, choices);
             Assert.AreEqual(best.Value, choices[1]);
 
-// now, use the custom scorer
+            // now, use the custom scorer
 
-            best = Process.ExtractOne(query, choices, new SimpleRatioAlgorithm());
+            best = Process.ExtractOne(query, choices, null, ScorerCache.Get<DefaultRatioScorer>());
             Assert.AreEqual(best.Value, choices[0]);
 
-            best = Process.ExtractOne(query, choices_dict.Select(k => k.Value));
-            Assert.AreEqual(best.Value, choices_dict[1]);
+            best = Process.ExtractOne(query, choicesDict.Select(k => k.Value));
+            Assert.AreEqual(best.Value, choicesDict[1]);
 
         }
 
         [TestMethod]
-        public void testWithCutoff()
+        public void TestWithCutoff()
         {
             var choices = new[]
             {
@@ -155,7 +153,7 @@ namespace FuzzySharp.Test.FuzzyTests
             // in this situation, this is an event that does not exist in the list
             // we don't want to randomly match to something, so we use a reasonable cutoff
 
-            var best = Process.ExtractSorted(query, choices, 50);
+            var best = Process.ExtractSorted(query, choices, cutoff: 50);
             Assert.IsTrue(!best.Any());
             // .assertIsNone(best) // unittest.TestCase did not have assertIsNone until Python 2.7
 
@@ -167,7 +165,7 @@ namespace FuzzySharp.Test.FuzzyTests
         }
 
         [TestMethod]
-        public void testWithCutoff2()
+        public void TestWithCutoff2()
         {
             var choices = new[]
             {
@@ -179,15 +177,15 @@ namespace FuzzySharp.Test.FuzzyTests
 
             var query = "new york mets vs chicago cubs";
             // Only find 100-score cases
-            var res = Process.ExtractSorted(query, choices, 100);
+            var res = Process.ExtractSorted(query, choices, cutoff: 100);
             Assert.IsTrue(res.Any());
-            var best_match = res.First();
-            Assert.IsTrue(best_match.Value == choices[0]);
+            var bestMatch = res.First();
+            Assert.IsTrue(bestMatch.Value == choices[0]);
 
         }
 
         [TestMethod]
-        public void testEmptyStrings()
+        public void TestEmptyStrings()
         {
             var choices = new[]
             {
