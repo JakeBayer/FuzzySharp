@@ -331,7 +331,7 @@ namespace FuzzySharp
         /// <returns></returns>
         public static int PartialTokenAbbreviationRatio(string input1, string input2, PreprocessMode preprocessMode)
         {
-            return ScorerCache.Get<PartialTokenAbbreviationScorer>().Score(input1, input2);
+            return ScorerCache.Get<PartialTokenAbbreviationScorer>().Score(input1, input2, preprocessMode);
         }
         #endregion
 
