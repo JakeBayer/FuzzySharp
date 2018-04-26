@@ -33,7 +33,7 @@ Fuzz.PartialTokenSetRatio("fuzzy was a bear", "fuzzy fuzzy fuzzy bear")
 100
 ```
 
-### Token Initialism Ratio
+#### Token Initialism Ratio
 ```csharp
 Fuzz.TokenInitialismRatio("NASA", "National Aeronautics and Space Administration");
 89
@@ -46,7 +46,7 @@ Fuzz.PartialTokenInitialismRatio("NASA", "National Aeronautics Space Administrat
 100
 ```
 
-### Token Abbreviation Ratio
+#### Token Abbreviation Ratio
 ```csharp
 Fuzz.TokenAbbreviationRatio("bl 420", "Baseline section 420", PreprocessMode.Full);
 40
