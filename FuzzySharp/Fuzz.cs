@@ -344,7 +344,7 @@ namespace FuzzySharp
         /// <returns></returns>
         public static int WeightedRatio(string input1, string input2)
         {
-            return ScorerCache.Get<WeightedComparisonScorer>().Score(input1, input2);
+            return ScorerCache.Get<WeightedRatioScorer>().Score(input1, input2);
         }
 
         /// <summary>
@@ -356,7 +356,7 @@ namespace FuzzySharp
         /// <returns></returns>
         public static int WeightedRatio(string input1, string input2, PreprocessMode preprocessMode)
         {
-            return ScorerCache.Get<WeightedComparisonScorer>().Score(input1, input2, preprocessMode);
+            return ScorerCache.Get<WeightedRatioScorer>().Score(input1, input2, preprocessMode);
         }
         #endregion
     }

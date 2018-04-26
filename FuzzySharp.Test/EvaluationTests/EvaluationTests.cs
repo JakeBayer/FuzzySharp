@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using FuzzySharp.PreProcess;
 using FuzzySharp.SimilarityRatio;
+using FuzzySharp.SimilarityRatio.Scorer.Composite;
 using FuzzySharp.SimilarityRatio.Scorer.StrategySensitive;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -56,6 +57,16 @@ namespace FuzzySharp.Test.EvaluationTests
             var query = new[] { "new york mets vs chicago cubs", "CitiField", "2017-03-19", "8pm" };
 
             var best = Process.ExtractOne(query, events, strings => strings[0]);
+
+            var ratio = ScorerCache.Get<DefaultRatioScorer>();
+            var partial = ScorerCache.Get<PartialRatioScorer>();
+            var tokenSet = ScorerCache.Get<TokenSetScorer>();
+            var partialTokenSet = ScorerCache.Get<PartialTokenSetScorer>();
+            var tokenSort = ScorerCache.Get<TokenSortScorer>();
+            var partialTokenSort = ScorerCache.Get<PartialTokenSortScorer>();
+            var tokenAbbreviation = ScorerCache.Get<TokenAbbreviationScorer>();
+            var partialTokenAbbreviation = ScorerCache.Get<PartialTokenAbbreviationScorer>();
+            var weighted = ScorerCache.Get<WeightedRatioScorer>();
         }
     }
 }

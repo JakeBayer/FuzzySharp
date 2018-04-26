@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace FuzzySharp.SimilarityRatio.Scorer.Composite
 {
-    public class WeightedComparisonScorer : ScorerBase
+    public class WeightedRatioScorer : ScorerBase
     {
         private static double UNBASE_SCALE  = .95;
         private static double PARTIAL_SCALE = .90;

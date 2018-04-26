@@ -89,7 +89,6 @@ Process.ExtractOne("cowboys", new[] { "Atlanta Falcons", "New York Jets", "New Y
 (string: Dallas Cowboys, score: 57, index: 3)
 ```
 
-
 Extraction can operate on objects of similar type. Use the "process" parameter to reduce the object to the string which it should be compared on. In the following example, the object is an array that contains the matchup, the arena, the date, and the time. We are matching on the first (0 index) parameter, the matchup.
 ```csharp
 var events = new[]
@@ -102,6 +101,21 @@ var query = new[] { "new york mets vs chicago cubs", "CitiField", "2017-03-19", 
 var best = Process.ExtractOne(query, events, strings => strings[0]);
 
 best: (value: { "chicago cubs vs new york mets", "CitiField", "2011-05-11", "8pm" }, score: 95, index: 0)
+```
+
+### Using Different Scorers
+Scoring strategies are stateless, and as such should be static. However, in order to get them to share all the code they have in common via inheritance, making them static was not possible.
+Currently one way around having to new up an instance everytime you want to use one is to use the cache. This will ensure only one instance of each scorer ever exists.
+```csharp
+var ratio = ScorerCache.Get<DefaultRatioScorer>();
+var partialRatio = ScorerCache.Get<PartialRatioScorer>();
+var tokenSet = ScorerCache.Get<TokenSetScorer>();
+var partialTokenSet = ScorerCache.Get<PartialTokenSetScorer>();
+var tokenSort = ScorerCache.Get<TokenSortScorer>();
+var partialTokenSort = ScorerCache.Get<PartialTokenSortScorer>();
+var tokenAbbreviation = ScorerCache.Get<TokenAbbreviationScorer>();
+var partialTokenAbbreviation = ScorerCache.Get<PartialTokenAbbreviationScorer>();
+var weighted = ScorerCache.Get<WeightedRatioScorer>();
 ```
 
 ## Credits
