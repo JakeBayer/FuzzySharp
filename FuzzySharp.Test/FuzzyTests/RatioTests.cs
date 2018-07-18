@@ -94,6 +94,13 @@ namespace FuzzySharp.Test.FuzzyTests
         }
 
         [TestMethod]
+        public void TestTokenAbbreviationRatio()
+        {
+            Assert.AreEqual(Fuzz.TokenAbbreviationRatio("bl 420", "Baseline section 420", PreprocessMode.Full), 40);
+            Assert.AreEqual(Fuzz.PartialTokenAbbreviationRatio("bl 420", "Baseline section 420", PreprocessMode.Full), 50);
+        }
+
+        [TestMethod]
         public void TestPartialTokenSetRatio()
         {
             Assert.AreEqual(Fuzz.PartialTokenSetRatio(_s4, _s7), 100);

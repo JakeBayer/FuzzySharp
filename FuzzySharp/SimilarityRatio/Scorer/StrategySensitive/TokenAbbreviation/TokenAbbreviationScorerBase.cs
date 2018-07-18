@@ -29,8 +29,8 @@ namespace FuzzySharp.SimilarityRatio.Scorer.StrategySensitive
             if (lenRatio < 1.5) return 0;
 
             // numbers can't be abbreviations for other numbers, though that would be hilarious. "Yes, 4 - as in 4,238"
-            var tokensLonger = Regex.Matches(longer, @"[a-zA-Z]+").Select(m => m.Value).ToArray();
-            var tokensShorter = Regex.Matches(shorter, @"[a-zA-Z]+").Select(m => m.Value).ToArray();
+            var tokensLonger = Regex.Matches(longer, @"[a-zA-Z]+").Cast<Match>().Select(m => m.Value).ToArray();
+            var tokensShorter = Regex.Matches(shorter, @"[a-zA-Z]+").Cast<Match>().Select(m => m.Value).ToArray();
 
             // more than 4 tokens and it's probably not an abbreviation (and could get costly)
             if (tokensShorter.Length > 4)

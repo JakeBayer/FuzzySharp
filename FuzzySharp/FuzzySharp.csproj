@@ -1,7 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFrameworks>netcoreapp2.0;net45;net46</TargetFrameworks>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Jacob Bayer</Authors>
+    <Description>Fuzzy matcher based on FuzzyWuzzy algorithm from SeatGeek</Description>
+    <PackageTags>Fuzzy String Matching FuzzyWuzzy FuzzySharp</PackageTags>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Company />
+    <Version>1.0.1</Version>
+    <PackageReleaseNotes>Compatibility with .net45 and .net46</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
