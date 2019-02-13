@@ -22,18 +22,9 @@ namespace FuzzySharp.Distance.Levenshtein
             return EditDistance(s1.ToCharArray(), s2.ToCharArray(), xcost);
         }
 
-       
 
-        public static double GetRatio<T>(T[] input1, T[] input2) where T : IEquatable<T>
-        {
-            int len1   = input1.Length;
-            int len2   = input2.Length;
-            int lensum = len1 + len2;
 
-            int editDistance = EditDistance(input1, input2, 1);
 
-            return editDistance == 0 ? 1 : (lensum - editDistance) / (double)lensum;
-        }
 
         public static double GetRatio<T>(IEnumerable<T> input1, IEnumerable<T> input2) where T : IEquatable<T>
         {
@@ -49,11 +40,6 @@ namespace FuzzySharp.Distance.Levenshtein
         }
 
         // Special Case
-        public static double GetRatio(string s1, string s2)
-        {
-            return GetRatio(s1.ToCharArray(), s2.ToCharArray());
-        }
-
         public double GetDistance(string t1, string t2)
         {
             return GetRatio(t1.ToCharArray(), t2.ToCharArray());

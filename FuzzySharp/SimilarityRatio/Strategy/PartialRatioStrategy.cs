@@ -4,18 +4,23 @@ using System.Linq;
 using FuzzySharp.Distance;
 using FuzzySharp.Distance.Levenshtein;
 using FuzzySharp.Edits;
+using FuzzySharp.MatchingBlocks;
 
 namespace FuzzySharp.SimilarityRatio.Strategy
 {
-    internal class PartialRatioStrategy : IStrategy
+    internal abstract class PartialRatioStrategyBase<TObj> : RatioStrategyBase<TObj>
     {
-        private static readonly Lazy<PartialRatioStrategy> s_lazy = new Lazy<PartialRatioStrategy>(() => new PartialRatioStrategy());
+        protected PartialRatioStrategyBase(IDistanceMetric<TObj> distanceMetric) : base(distanceMetric)
+        {
+        }
+
+        private static readonly Lazy<Generic.PartialRatioStrategy<>> s_lazy = new Lazy<PartialRatioStrategy>(() => new PartialRatioStrategy());
 
         public static PartialRatioStrategy Instance => s_lazy.Value;
 
         private PartialRatioStrategy() { }
 
-        public int Calculate(string input1, string input2)
+        public override int Calculate(string input1, string input2)
         {
             string shorter;
             string longer;
@@ -31,7 +36,7 @@ namespace FuzzySharp.SimilarityRatio.Strategy
                 longer  = input1;
             }
 
-            MatchingBlock[] matchingBlocks = Levenshtein.GetMatchingBlocks(shorter, longer);
+            MatchingBlock[] matchingBlocks = MatchingBlocksExtractor.Instance.GetMatchingBlocks(shorter, longer);
 
             List<double> scores = new List<double>();
 

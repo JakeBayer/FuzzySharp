@@ -4,6 +4,7 @@ using System.Linq;
 using FuzzySharp.Distance;
 using FuzzySharp.Distance.Levenshtein;
 using FuzzySharp.Edits;
+using FuzzySharp.MatchingBlocks;
 
 namespace FuzzySharp.SimilarityRatio.Strategy.Generic
 {
@@ -25,7 +26,7 @@ namespace FuzzySharp.SimilarityRatio.Strategy.Generic
                 longer  = input1;
             }
 
-            MatchingBlock[] matchingBlocks = Levenshtein.GetMatchingBlocks(shorter, longer);
+            MatchingBlock[] matchingBlocks = MatchingBlocksExtractor<T>.Instance.GetMatchingBlocks(shorter, longer);
 
             List<double> scores = new List<double>();
 

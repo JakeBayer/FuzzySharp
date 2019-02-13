@@ -4,28 +4,31 @@ using FuzzySharp.Distance.Levenshtein;
 
 namespace FuzzySharp.SimilarityRatio.Strategy
 {
-    internal class DefaultRatioStrategy : IStrategy<string, Levenshtein>
+    internal abstract class DefaultRatioStrategyBase<TObj> : RatioStrategyBase<TObj[]>
     {
+        protected DefaultRatioStrategyBase(IDistanceMetric<TObj[]> distanceMetric) : base(distanceMetric)
+        {
+        }
 
+        public override int Calculate(TObj[] input1, TObj[] input2)
+        {
+            return (int)DistanceMetric.GetDistance(input1, input2);
+        }
     }
 
-    internal class DefaultRatioStrategy<TDistanceMetric> : IStrategy<string, TDistanceMetric> 
-        where TDistanceMetric : IDistanceMetric<string>
+    internal class DefaultRatioStrategy : RatioStrategyBase<string>
     {
         private static readonly Lazy<DefaultRatioStrategy> s_lazy = new Lazy<DefaultRatioStrategy>(() => new DefaultRatioStrategy());
 
         public static DefaultRatioStrategy Instance => s_lazy.Value;
 
-        private DefaultRatioStrategy()
+        protected DefaultRatioStrategy() : base(Levenshtein.Instance)
         {
-            DistanceMetric = 
         }
 
-        public TDistanceMetric DistanceMetric { get; }
-
-        public int Calculate(string input1, string input2)
+        public override int Calculate(string input1, string input2)
         {
-            return (int)Math.Round(100 * Levenshtein.GetRatio(input1, input2));
+            throw new NotImplementedException();
         }
     }
 }
