@@ -1,13 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using FuzzySharp.Distance;
+using FuzzySharp.Distance.Levenshtein;
 using FuzzySharp.Edits;
 
 namespace FuzzySharp.SimilarityRatio.Strategy
 {
-    internal class PartialRatioStrategy
+    internal class PartialRatioStrategy : IStrategy
     {
-        public static int Calculate(string input1, string input2)
+        private static readonly Lazy<PartialRatioStrategy> s_lazy = new Lazy<PartialRatioStrategy>(() => new PartialRatioStrategy());
+
+        public static PartialRatioStrategy Instance => s_lazy.Value;
+
+        private PartialRatioStrategy() { }
+
+        public int Calculate(string input1, string input2)
         {
             string shorter;
             string longer;

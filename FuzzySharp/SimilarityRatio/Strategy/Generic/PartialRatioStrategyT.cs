@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using FuzzySharp.Distance;
+using FuzzySharp.Distance.Levenshtein;
 using FuzzySharp.Edits;
 
 namespace FuzzySharp.SimilarityRatio.Strategy.Generic

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
+using System.Text;
 using FuzzySharp.Edits;
 
-namespace FuzzySharp
+namespace FuzzySharp.Distance.Levenshtein
 {
-    public static class Levenshtein
+    public abstract class LevenshteinBase
     {
         private static EditOp[] GetEditOps<T>(T[] arr1, T[] arr2) where T : IEquatable<T>
         {
@@ -64,10 +64,10 @@ namespace FuzzySharp
             {
 
                 int ptrPrev = (i - 1) * len2;
-                int ptrC    = i       * len2;
-                int ptrEnd  = ptrC + len2 - 1;
+                int ptrC = i * len2;
+                int ptrEnd = ptrC + len2 - 1;
 
-                T   char1    = c1[p1 + i - 1];
+                T char1 = c1[p1 + i - 1];
                 int ptrChar2 = p2;
 
                 int x = i;
@@ -105,8 +105,8 @@ namespace FuzzySharp
 
         private static EditOp[] EditOpsFromCostMatrix<T>(int len1, T[] c1, int p1, int o1,
                                                       int len2, T[] c2, int p2, int o2,
-                                                      int[] matrix) 
-            where T: IEquatable<T>
+                                                      int[] matrix)
+            where T : IEquatable<T>
         {
 
             int i, j, pos;
@@ -228,7 +228,7 @@ namespace FuzzySharp
         }
 
         public static MatchingBlock[] GetMatchingBlocks<T>(T[] s1, T[] s2) where T : IEquatable<T>
-        { 
+        {
             return GetMatchingBlocks(s1.Length, s2.Length, GetEditOps(s1, s2));
         }
 
@@ -304,8 +304,8 @@ namespace FuzzySharp
             MatchingBlock finalBlock = new MatchingBlock
             {
                 SourcePos = len1,
-                DestPos   = len2,
-                Length    = 0
+                DestPos = len2,
+                Length = 0
             };
 
             matchingBlocks[mb] = finalBlock;
@@ -467,7 +467,7 @@ namespace FuzzySharp
 
             if (SourcePos < len1 || DestPos < len2)
             {
-                Debug.Assert(len1 -SourcePos == len2 - DestPos);
+                Debug.Assert(len1 - SourcePos == len2 - DestPos);
 
                 MatchingBlock mb = new MatchingBlock();
                 mb.SourcePos = SourcePos;
@@ -666,15 +666,8 @@ namespace FuzzySharp
             return opCodes;
         }
 
-        // Special Case
-        public static int EditDistance(string s1, string s2, int xcost = 0)
+        internal static int EditDistance<T>(T[] c1, T[] c2, int xcost = 0) where T : IEquatable<T>
         {
-            return EditDistance(s1.ToCharArray(), s2.ToCharArray(), xcost);
-        }
-
-        public static int EditDistance<T>(T[] c1, T[] c2, int xcost = 0) where T:  IEquatable<T>
-        {
-
             int i;
             int half;
 
@@ -712,7 +705,7 @@ namespace FuzzySharp
             if (len1 > len2)
             {
 
-                int nx = len1;
+                int nx   = len1;
                 int temp = str1;
 
                 len1 = len2;
@@ -745,7 +738,7 @@ namespace FuzzySharp
             half = len1 >> 1;
 
             int[] row = new int[len2];
-            int end = len2 - 1;
+            int   end = len2 - 1;
 
             for (i = 0; i < len2 - (xcost != 0 ? 0 : half); i++)
                 row[i] = i;
@@ -763,7 +756,7 @@ namespace FuzzySharp
 
                     int p = 1;
 
-                    T ch1 = c1[str1 + i - 1];
+                    T   ch1 = c1[str1 + i - 1];
                     int c2p = str2;
 
                     int D = i;
@@ -805,7 +798,7 @@ namespace FuzzySharp
                 {
                     int p;
 
-                    T ch1 = c1[str1 + i - 1];
+                    T   ch1 = c1[str1 + i - 1];
                     int c2p;
 
                     int D, x;
@@ -817,9 +810,9 @@ namespace FuzzySharp
                         int c3;
 
                         c2p = str2 + offset;
-                        p = offset;
-                        c3 = row[p++] + (!ch1.Equals(c2[c2p++]) ? 1 : 0);
-                        x = row[p];
+                        p   = offset;
+                        c3  = row[p++] + (!ch1.Equals(c2[c2p++]) ? 1 : 0);
+                        x   = row[p];
                         x++;
                         D = x;
                         if (x > c3)
@@ -830,9 +823,9 @@ namespace FuzzySharp
                     }
                     else
                     {
-                        p = 1;
+                        p   = 1;
                         c2p = str2;
-                        D = x = i;
+                        D   = x = i;
                     }
                     /* skip the lower triangle */
                     if (i <= half + 1)
@@ -871,10 +864,9 @@ namespace FuzzySharp
             i = row[end];
 
             return i;
-
         }
 
-        private static int Memchr<T>(T[] haystack, int offset, T needle, int num) where T : IEquatable<T>
+        private static int Memchr<T>(IReadOnlyList<T> haystack, int offset, T needle, int num) where T : IEquatable<T>
         {
 
             if (num != 0)
@@ -891,37 +883,6 @@ namespace FuzzySharp
 
             }
             return 0;
-
-        }
-
-        public static double GetRatio<T>(T[] input1, T[] input2) where T : IEquatable<T>
-        {
-            int len1   = input1.Length;
-            int len2   = input2.Length;
-            int lensum = len1 + len2;
-
-            int editDistance = EditDistance(input1, input2, 1);
-
-            return editDistance == 0 ? 1 : (lensum - editDistance) / (double)lensum;
-        }
-
-        public static double GetRatio<T>(IEnumerable<T> input1, IEnumerable<T> input2) where T : IEquatable<T>
-        {
-            var s1 = input1.ToArray();
-            var s2 = input2.ToArray();
-            int len1 = s1.Length;
-            int len2 = s2.Length;
-            int lensum = len1 + len2;
-
-            int editDistance = EditDistance(s1, s2, 1);
-
-            return editDistance == 0 ? 1 : (lensum - editDistance) / (double)lensum;
-        }
-
-        // Special Case
-        public static double GetRatio(string s1, string s2)
-        {
-            return GetRatio(s1.ToCharArray(), s2.ToCharArray());
         }
     }
 }

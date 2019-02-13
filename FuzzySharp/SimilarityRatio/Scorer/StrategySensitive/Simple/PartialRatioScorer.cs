@@ -3,8 +3,14 @@ using FuzzySharp.SimilarityRatio.Strategy;
 
 namespace FuzzySharp.SimilarityRatio.Scorer.StrategySensitive
 {
-    public class PartialRatioScorer : SimpleRatioScorerBase
+    internal class PartialRatioScorer : SimpleRatioScorerBase<PartialRatioStrategy>
     {
-        protected override Func<string, string, int> Scorer => PartialRatioStrategy.Calculate;
+        private static readonly Lazy<PartialRatioScorer> s_lazy = new Lazy<PartialRatioScorer>(() => new PartialRatioScorer());
+
+        public static PartialRatioScorer Instance => s_lazy.Value;
+
+        private PartialRatioScorer() : base(PartialRatioStrategy.Instance)
+        {
+        }
     }
 }

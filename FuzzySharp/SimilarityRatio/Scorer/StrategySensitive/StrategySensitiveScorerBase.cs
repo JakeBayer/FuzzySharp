@@ -1,9 +1,15 @@
 ﻿using System;
+using FuzzySharp.SimilarityRatio.Strategy;
 
 namespace FuzzySharp.SimilarityRatio.Scorer.StrategySensitive
 {
-    public abstract class StrategySensitiveScorerBase : ScorerBase
+    internal abstract class StrategySensitiveScorerBase<TStrategy> : ScorerBase
+        where TStrategy : IStrategy
     {
-        protected abstract Func<string, string, int> Scorer { get; }
+        protected StrategySensitiveScorerBase(TStrategy strategy)
+        {
+            Strategy = strategy;
+        }
+        protected TStrategy Strategy { get; }
     }
 }
