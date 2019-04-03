@@ -11,11 +11,4 @@
     <Version>1.0.2</Version>
     <PackageReleaseNotes>Compatibility with .net45 and .net46</PackageReleaseNotes>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Reference Include="System">
-      <HintPath>System</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>
