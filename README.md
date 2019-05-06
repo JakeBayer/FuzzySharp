@@ -3,7 +3,7 @@ C# .NET fuzzy string matching implementation of Seat Geek's well known python Fu
 
 ## Usage
 
-Install-Package FuzzySharp -Version 1.0.1
+Install-Package FuzzySharp -Version 1.0.3
 
 #### Simple Ratio
 ```csharp

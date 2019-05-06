@@ -4,15 +4,18 @@
     <TargetFrameworks>netcoreapp2.0;netcoreapp2.1;netstandard1.6;netstandard2.0;net45;net46;net461;net47;net471;net472</TargetFrameworks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Jacob Bayer</Authors>
-    <Description>Fuzzy matcher based on FuzzyWuzzy algorithm from SeatGeek</Description>
-    <PackageTags>Fuzzy String Matching FuzzyWuzzy FuzzySharp</PackageTags>
+    <Description>Fuzzy string matcher based on FuzzyWuzzy algorithm from SeatGeek</Description>
+    <PackageTags>Fuzzy String Matching Comparison FuzzyWuzzy FuzzySharp</PackageTags>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 	<RepositoryUrl>https://github.com/JakeBayer/FuzzySharp</RepositoryUrl>
 	<RepositoryType>git</RepositoryType>
     <Company />
-    <Version>1.0.2</Version>
+    <Version>1.0.3</Version>
     <PackageReleaseNotes>Compatibility with .netstandard and more versions of core and .net</PackageReleaseNotes>
 	<PublishRepositoryUrl>true</PublishRepositoryUrl>
+	<PackageProjectUrl>https://github.com/JakeBayer/FuzzySharp</PackageProjectUrl>
+	<AssemblyVersion>1.0.3.0</AssemblyVersion>
+	<FileVersion>1.0.3.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
