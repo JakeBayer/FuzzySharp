@@ -14,8 +14,8 @@ namespace FuzzySharp.SimilarityRatio.Scorer.StrategySensitive
 
         public int Score(string input1, string input2)
         {
-            var tokens1 = Regex.Split(input1, @"\s+").OrderBy(s => s).ToArray();
-            var tokens2 = Regex.Split(input2, @"\s+").OrderBy(s => s).ToArray();
+            var tokens1 = Regex.Split(input1, @"\s+").Where(s => s.Any()).OrderBy(s => s).ToArray();
+            var tokens2 = Regex.Split(input2, @"\s+").Where(s => s.Any()).OrderBy(s => s).ToArray();
 
             return Score(tokens1, tokens2);
         }
