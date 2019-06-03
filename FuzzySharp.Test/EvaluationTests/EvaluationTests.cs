@@ -68,5 +68,19 @@ namespace FuzzySharp.Test.EvaluationTests
             var partialTokenAbbreviation = ScorerCache.Get<PartialTokenAbbreviationScorer>();
             var weighted = ScorerCache.Get<WeightedRatioScorer>();
         }
+
+        [TestMethod]
+        public void TokenInitialismScorer_WhenGivenStringWithTrailingSpaces_DoesNotBreak()
+        {
+            // arrange
+            var longer = "lusiki plaza share block ";
+            var shorter = "jmft";
+
+            // act
+            var ratio = Fuzz.TokenInitialismRatio(shorter, longer);
+
+            // assert
+            Assert.IsTrue(ratio >= 0);
+        }
     }
 }
