@@ -105,6 +105,18 @@ var best = Process.ExtractOne(query, events, strings => strings[0]);
 best: (value: { "chicago cubs vs new york mets", "CitiField", "2011-05-11", "8pm" }, score: 95, index: 0)
 ```
 
+### FuzzySharp in Different Languages
+FuzzySharp was written with English in mind, and as such the Default string preprocessor only looks at English alphanumeric characters in the input strings, and will strip all others out. However, the `Extract` methods in the `Process` class do provide the option to specify your own string preprocessor. If this parameter is omitted, the Default will be used. However if you provide your own, the provided one will be used, so you are free to provide your own criteria for whatever character set you want to admit. For instance, using the parameter `(s) => s` will prevent the string from being altered at all before being run through the similarity algorithms.
+
+E.g.,
+
+```csharp
+var query = "strng";
+var choices = new [] { "stríng", "stráng", "stréng" };
+var results = Process.ExtractAll(query, choices, (s) => s);
+```
+The above will run the similarity algorithm on all the choices without stripping out the accented characters.
+
 ### Using Different Scorers
 Scoring strategies are stateless, and as such should be static. However, in order to get them to share all the code they have in common via inheritance, making them static was not possible.
 Currently one way around having to new up an instance everytime you want to use one is to use the cache. This will ensure only one instance of each scorer ever exists.
