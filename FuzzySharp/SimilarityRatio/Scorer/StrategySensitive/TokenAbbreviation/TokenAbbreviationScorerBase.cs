@@ -70,8 +70,8 @@ namespace FuzzySharp.SimilarityRatio.Scorer.StrategySensitive
                 }
                 allScores.Add((int) (sum / fewerTokens.Length));
             }
-
-            return allScores.Max();
+            
+            return allScores.Count==0?0:allScores.Max();
         }
 
         /// <summary>
