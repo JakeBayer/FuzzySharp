@@ -3,12 +3,12 @@ name: Nuget Package Deploy
 on:
   push:
     branches: 
-      - master
+      - development
 
 jobs:
   build:
     runs-on: windows-latest
-    name: Publish Nuget
+    name: Build
     steps:
       - name: Checkout repository
         uses: actions/checkout@v1
@@ -16,20 +16,26 @@ jobs:
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 2.2.108
+          dotnet-version: 3.0.100
         
       - name: Build with dotnet
         run: dotnet build --configuration Release
+
       - name: Test with dotnet
         run: dotnet test
   deploy:
     needs: [build]
+    name: Deploy
     runs-on: [windows-latest]
     steps:
       - uses: actions/checkout@v1
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 3.0.100
+        
+      - name: Build with dotnet
+        run: dotnet build --configuration Release
+
       - name: Pack nuget package
         run: dotnet pack --configuration Release
-      - name: Push package to NuGet
-        run: dotnet nuget push **/*.nupkg
-              --api-key ${{ secrets.NUGET_DEPLOY_KEY }}
-              --source https://api.nuget.org/v1/index.json
