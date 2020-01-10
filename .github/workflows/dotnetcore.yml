@@ -43,4 +43,4 @@ jobs:
       - name: Push package to NuGet
         run: dotnet nuget push **/*.nupkg
               --api-key ${{ secrets.NUGET_DEPLOY_KEY }}
-              --source https://api.nuget.org/v1/index.json
+              --source https://api.nuget.org/v3/index.json
