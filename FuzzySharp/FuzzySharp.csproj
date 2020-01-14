@@ -12,7 +12,7 @@
         <RepositoryType>git</RepositoryType>
         <Company />
         <Version>1.0.5</Version>
-        <PackageReleaseNotes>Fix bug regarding trailing spaces with token initialism ratio</PackageReleaseNotes>
+        <PackageReleaseNotes>Include symbols in package. Support .Net Standard 2.1. Fix bug where empty strings throws error with Abbreviation ratio</PackageReleaseNotes>
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <PackageProjectUrl>https://github.com/JakeBayer/FuzzySharp</PackageProjectUrl>
         <AssemblyVersion>1.0.4.0</AssemblyVersion>
