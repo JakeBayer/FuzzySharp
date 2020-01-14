@@ -35,7 +35,7 @@ jobs:
           dotnet-version: 3.0.100
         
       - name: Build with dotnet
-        run: dotnet build --configuration Release
+        run: dotnet build --configuration Release 
 
       - name: Pack nuget package
-        run: dotnet pack --configuration Release --include-symbols
+        run: dotnet pack --configuration Release --include-symbols -p:SymbolPackageFormat=snupkg
