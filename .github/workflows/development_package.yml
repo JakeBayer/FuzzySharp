@@ -24,7 +24,7 @@ jobs:
       - name: Test with dotnet
         run: dotnet test
   deploy:
-    needs: [build]
+    needs: [Build]
     name: Package
     runs-on: [windows-latest]
     steps:
@@ -38,4 +38,4 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: Pack nuget package
-        run: dotnet pack --configuration Release
+        run: dotnet pack --configuration Release --include-symbols
