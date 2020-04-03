@@ -1,9 +1,9 @@
 ﻿using FuzzySharp.PreProcess;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace FuzzySharp.Test.FuzzyTests
 {
-    [TestClass]
+    [TestFixture]
     public class RatioTests
     {
         #region Private Fields
@@ -25,7 +25,7 @@ namespace FuzzySharp.Test.FuzzyTests
         private string[] _cirqueStrings, _baseballStrings;
         #endregion
 
-        [TestInitialize]
+        [SetUp]
         public void Setup()
         {
             _s1  = "new york mets";
@@ -45,7 +45,7 @@ namespace FuzzySharp.Test.FuzzyTests
             _s10A = "{b";
         }
 
-        [TestMethod]
+        [Test]
         public void Test_Equal()
         {
             Assert.AreEqual(Fuzz.Ratio(_s1, _s1A), 100);
@@ -53,26 +53,26 @@ namespace FuzzySharp.Test.FuzzyTests
             Assert.AreEqual(Fuzz.Ratio(_s9, _s9A), 100);
         }
 
-        [TestMethod]
+        [Test]
         public void Test_Case_Insensitive()
         {
             Assert.AreNotEqual(Fuzz.Ratio(_s1, _s2), 100);
             Assert.AreEqual(Fuzz.Ratio(_s1, _s2, PreprocessMode.Full), 100);
         }
 
-        [TestMethod]
+        [Test]
         public void Test_Partial()
         {
             Assert.AreEqual(Fuzz.PartialRatio(_s1, _s3), 100);
         }
 
-        [TestMethod]
+        [Test]
         public void TestTokenSortRatio()
         {
             Assert.AreEqual(Fuzz.TokenSortRatio(_s1, _s1A), 100);
         }
 
-        [TestMethod]
+        [Test]
         public void TestPartialTokenSortRatio()
         {
             Assert.AreEqual(Fuzz.PartialTokenSortRatio(_s1, _s1A, PreprocessMode.Full), 100);
@@ -83,7 +83,7 @@ namespace FuzzySharp.Test.FuzzyTests
             Assert.AreEqual(Fuzz.PartialTokenSortRatio(_s10, _s10A), 50);
         }
 
-        [TestMethod]
+        [Test]
         public void TestTokenSetRatio()
         {
             Assert.AreEqual(Fuzz.TokenSetRatio(_s4, _s5, PreprocessMode.Full), 100);
@@ -93,51 +93,53 @@ namespace FuzzySharp.Test.FuzzyTests
             Assert.AreEqual(Fuzz.TokenSetRatio(_s10, _s10A), 50);
         }
 
-        [TestMethod]
+        [Test]
         public void TestTokenAbbreviationRatio()
         {
             Assert.AreEqual(Fuzz.TokenAbbreviationRatio("bl 420", "Baseline section 420", PreprocessMode.Full), 40);
             Assert.AreEqual(Fuzz.PartialTokenAbbreviationRatio("bl 420", "Baseline section 420", PreprocessMode.Full), 50);
         }
 
-        [TestMethod]
+        [Test]
         public void TestPartialTokenSetRatio()
         {
             Assert.AreEqual(Fuzz.PartialTokenSetRatio(_s4, _s7), 100);
         }
 
-        [TestMethod]
+        [Test]
         public void TestWeightedRatioEqual()
         {
             Assert.AreEqual(Fuzz.WeightedRatio(_s1, _s1A), 100);
         }
 
-        [TestMethod]
+        [Test]
         public void TestWeightedRatioCaseInsensitive()
         {
             Assert.AreEqual(Fuzz.WeightedRatio(_s1, _s2, PreprocessMode.Full), 100);
         }
 
-        [TestMethod]
+        [Test]
         public void TestWeightedRatioPartialMatch()
         {
             Assert.AreEqual(Fuzz.WeightedRatio(_s1, _s3), 90);
         }
 
-        [TestMethod]
+        [Test]
         public void TestWeightedRatioMisorderedMatch()
         {
             Assert.AreEqual(Fuzz.WeightedRatio(_s4, _s5), 95);
         }
 
-        [TestMethod]
-        public void TestEmptyStringsScore100()
+        [Test]
+        public void TestEmptyStringsScore0()
         {
-            Assert.AreEqual(Fuzz.Ratio("", ""), 100);
-            Assert.AreEqual(Fuzz.PartialRatio("", ""), 100);
+            Assert.That(Fuzz.Ratio("test_string", ""), Is.EqualTo(0));
+            Assert.That(Fuzz.PartialRatio("test_string", ""), Is.EqualTo(0));
+            Assert.That(Fuzz.Ratio("", ""), Is.EqualTo(0));
+            Assert.That(Fuzz.PartialRatio("", ""), Is.EqualTo(0));
         }
 
-        [TestMethod]
+        [Test]
         public void TestIssueSeven()
         {
             _s1 = "HSINCHUANG";
@@ -150,7 +152,7 @@ namespace FuzzySharp.Test.FuzzyTests
             Assert.IsTrue(Fuzz.PartialRatio(_s1, _s4) > 75);
         }
 
-        [TestMethod]
+        [Test]
         public void TestRatioUnicodeString()
         {
             _s1 = "\u00C1";
@@ -159,7 +161,7 @@ namespace FuzzySharp.Test.FuzzyTests
             Assert.AreEqual(0, score);
         }
 
-        [TestMethod]
+        [Test]
         public void TestPartialRatioUnicodeString()
         {
             _s1 = "\u00C1";
@@ -168,7 +170,7 @@ namespace FuzzySharp.Test.FuzzyTests
             Assert.AreEqual(0, score);
         }
 
-        [TestMethod]
+        [Test]
         public void TestWRatioUnicodeString()
         {
             _s1 = "\u00C1";

@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using FuzzySharp.PreProcess;
+﻿using FuzzySharp.PreProcess;
 using FuzzySharp.SimilarityRatio;
 using FuzzySharp.SimilarityRatio.Scorer.Composite;
 using FuzzySharp.SimilarityRatio.Scorer.StrategySensitive;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace FuzzySharp.Test.EvaluationTests
 {
-    [TestClass]
+    [TestFixture]
     public class EvaluationTests
     {
-        [TestMethod]
+        [Test]
         public void Evaluate()
         {
             var a1 = Fuzz.Ratio("mysmilarstring", "myawfullysimilarstirng");
@@ -69,7 +65,7 @@ namespace FuzzySharp.Test.EvaluationTests
             var weighted = ScorerCache.Get<WeightedRatioScorer>();
         }
 
-        [TestMethod]
+        [Test]
         public void TokenInitialismScorer_WhenGivenStringWithTrailingSpaces_DoesNotBreak()
         {
             // arrange

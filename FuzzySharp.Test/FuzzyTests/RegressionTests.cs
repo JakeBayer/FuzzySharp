@@ -1,14 +1,14 @@
 ﻿
 using FuzzySharp.SimilarityRatio;
 using FuzzySharp.SimilarityRatio.Scorer;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using System;
 using System.Linq;
 using System.Reflection;
 
 namespace FuzzySharp.Test.FuzzyTests
 {
-    [TestClass]
+    [TestFixture]
     public class RegressionTests
     {
 
@@ -16,12 +16,24 @@ namespace FuzzySharp.Test.FuzzyTests
         /// <summary>
         /// Test to ensure that all IRatioScorer implementations handle scoring empty strings & whitespace strings
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestScoringEmptyString()
         {
 
             var scorerType = typeof(IRatioScorer);
-            var scorerTypes = AppDomain.CurrentDomain.GetAssemblies().SelectMany(s => s.GetTypes()).Where(p => scorerType.IsAssignableFrom(p) && p.IsClass && !p.IsAbstract);
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies().ToList();
+            var types = assemblies.SelectMany(s =>
+            {
+                Type[] types = new Type[] { }; ;
+                try
+                {
+                    types = s.GetTypes();
+                }
+                catch {}
+                return types;
+            }).ToList();
+            var scorerTypes = types.Where(t => scorerType.IsAssignableFrom(t) && !t.IsAbstract && t.IsClass).ToList();
+            //var scorerTypes = AppDomain.CurrentDomain.GetAssemblies().SelectMany(s => s.GetTypes()).Where(p => scorerType.IsAssignableFrom(p) && p.IsClass && !p.IsAbstract);
         
 
             MethodInfo getScorerCacheMethodInfo = typeof(ScorerCache).GetMethod("Get");
