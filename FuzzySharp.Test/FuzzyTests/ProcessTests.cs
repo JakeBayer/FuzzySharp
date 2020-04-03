@@ -2,11 +2,11 @@
 using System.Linq;
 using FuzzySharp.SimilarityRatio;
 using FuzzySharp.SimilarityRatio.Scorer.StrategySensitive;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace FuzzySharp.Test.FuzzyTests
 {
-    [TestClass]
+    [TestFixture]
     public class ProcessTests
     {
         private string   _s1;
@@ -19,7 +19,7 @@ namespace FuzzySharp.Test.FuzzyTests
         private string[] _cirqueStrings;
         private string[] _baseballStrings;
 
-        [TestInitialize]
+        [SetUp]
         public void Setup()
         {
             _s1  = "new york mets";
@@ -48,7 +48,7 @@ namespace FuzzySharp.Test.FuzzyTests
             };
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetBestChoice1()
         {
             var query = "new york mets at atlanta braves";
@@ -57,7 +57,7 @@ namespace FuzzySharp.Test.FuzzyTests
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetBestChoice2()
         {
             var query = "philadelphia phillies at atlanta braves";
@@ -66,7 +66,7 @@ namespace FuzzySharp.Test.FuzzyTests
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetBestChoice3()
         {
             var query = "atlanta braves at philadelphia phillies";
@@ -75,7 +75,7 @@ namespace FuzzySharp.Test.FuzzyTests
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetBestChoice4()
         {
             var query = "chicago cubs vs new york mets";
@@ -84,7 +84,7 @@ namespace FuzzySharp.Test.FuzzyTests
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestWithProcessor()
         {
             var events = new[]
@@ -99,7 +99,7 @@ namespace FuzzySharp.Test.FuzzyTests
             Assert.AreEqual(best.Value, events[0]);
         }
 
-        [TestMethod]
+        [Test]
         public void TestWithScorer()
         {
             var choices = new[]
@@ -137,7 +137,7 @@ namespace FuzzySharp.Test.FuzzyTests
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestWithCutoff()
         {
             var choices = new[]
@@ -164,7 +164,7 @@ namespace FuzzySharp.Test.FuzzyTests
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestWithCutoff2()
         {
             var choices = new[]
@@ -184,7 +184,7 @@ namespace FuzzySharp.Test.FuzzyTests
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestEmptyStrings()
         {
             var choices = new[]
@@ -202,7 +202,7 @@ namespace FuzzySharp.Test.FuzzyTests
             Assert.AreEqual(best.Value, choices[1]);
         }
 
-//[TestMethod]
+//[Test]
 //public void  generate_choices() {
 //            choices = ['a', 'Bb', 'CcC']
 //            for choice in choices {
@@ -214,7 +214,7 @@ namespace FuzzySharp.Test.FuzzyTests
 
 //    }
 
-//[TestMethod]
+//[Test]
 //public void  test_dict_like_Extract() {
 //        """We should be able to use a dict-like object for choices, not only a
 //        dict, and still get dict-like output.
@@ -232,7 +232,7 @@ namespace FuzzySharp.Test.FuzzyTests
 
 //    }
 
-//[TestMethod]
+//[Test]
 //public void  test_dedupe() {
 //        """We should be able to use a list-like object for contains_dupes
 //        """
@@ -253,7 +253,7 @@ namespace FuzzySharp.Test.FuzzyTests
 
 //    }
 
-//[TestMethod]
+//[Test]
 //public void  test_simplematch() {
 //        basic_string = 'a, b'
 //        match_strings = ['a, b']

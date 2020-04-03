@@ -12,6 +12,11 @@ namespace FuzzySharp.SimilarityRatio.Strategy
             string shorter;
             string longer;
 
+            if (input1.Length == 0 || input2.Length == 0)
+            {
+                return 0;
+            }
+
             if (input1.Length < input2.Length)
             {
                 shorter = input1;
