@@ -1,4 +1,4 @@
-﻿using FuzzySharp.PreProcess;
+using FuzzySharp.PreProcess;
 using NUnit.Framework;
 
 namespace FuzzySharp.Test.FuzzyTests
@@ -153,12 +153,17 @@ namespace FuzzySharp.Test.FuzzyTests
         }
 
         [Test]
-        public void TestRatioUnicodeString()
+        public void TestIssueEight()
         {
-            _s1 = "\u00C1";
-            _s2 = "ABCD";
-            var score = Fuzz.Ratio(_s1, _s2);
-            Assert.AreEqual(0, score);
+            // https://github.com/JakeBayer/FuzzySharp/issues/8
+            Assert.AreEqual(100, Fuzz.PartialRatio("Partnernummer", "Partne\nrnum\nmerASDFPartnernummerASDF")); // was 85 
+            Assert.AreEqual(100, Fuzz.PartialRatio("Partnernummer", "PartnerrrrnummerASDFPartnernummerASDF"));  // was 77
+
+            // https://github.com/xdrop/fuzzywuzzy/issues/39
+            Assert.AreEqual(100, Fuzz.PartialRatio("kaution", "kdeffxxxiban:de1110010060046666666datum:16.11.17zeit:01:12uft0000899999tan076601testd.-20-maisonette-z4-jobas-hagkautionauszug")); // was 57
+
+            // https://github.com/seatgeek/fuzzywuzzy/issues/79
+            Assert.AreEqual(100, Fuzz.PartialRatio("this is a test", "is this is a not really thing this is a test!")); // was 92 (actually 93)
         }
 
         [Test]
@@ -171,7 +176,7 @@ namespace FuzzySharp.Test.FuzzyTests
         }
 
         [Test]
-        public void TestWRatioUnicodeString()
+        public void TestRatioUnicodeString()
         {
             _s1 = "\u00C1";
             _s2 = "ABCD";
