@@ -3,7 +3,7 @@ C# .NET fuzzy string matching implementation of Seat Geek's well known python Fu
 
 ## Usage
 
-Install-Package FuzzySharp -Version 2.0.0
+Install-Package FuzzySharp -Version 2.0.1
 
 ## NOTES
 As of version 2.0.0, if either test string is an empty string, the scorers will return a score of 0. Previously this was returning 100 for all partial ratios, which was causing severe issues for some fo the compound scorers.
