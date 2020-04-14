@@ -153,6 +153,14 @@ namespace FuzzySharp.Test.FuzzyTests
         }
 
         [Test]
+        public void TestIssueEight()
+        {
+            string dePN = "Partnernummer";
+            Assert.AreEqual(100, Fuzz.PartialRatio(dePN, "Partne\nrnum\nmerASDFPartnernummerASDF"));
+            Assert.AreEqual(100, Fuzz.PartialRatio(dePN, "PartnerrrrnummerASDFPartnernummerASDF"));
+        }
+
+        [Test]
         public void TestRatioUnicodeString()
         {
             _s1 = "\u00C1";

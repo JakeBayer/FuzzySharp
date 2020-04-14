@@ -128,6 +128,18 @@ namespace FuzzySharp
 
             while (i > 0 || j > 0)
             {
+                if (i != 0 && j != 0 && matrix[ptr] == matrix[ptr - len2 - 1]
+                    && c1[p1 + i - 1].Equals(c2[p2 + j - 1]))
+                {
+
+                    i--;
+                    j--;
+                    ptr -= len2 + 1;
+                    dir = 0;
+
+                    continue;
+
+                }
 
                 if (dir < 0 && j != 0 && matrix[ptr] == matrix[ptr - 1] + 1)
                 {
@@ -155,19 +167,6 @@ namespace FuzzySharp
                     eop.SourcePos = --i + o1;
                     eop.DestPos = j + o2;
                     ptr -= len2;
-
-                    continue;
-
-                }
-
-                if (i != 0 && j != 0 && matrix[ptr] == matrix[ptr - len2 - 1]
-                        && c1[p1 + i - 1].Equals(c2[p2 + j - 1]))
-                {
-
-                    i--;
-                    j--;
-                    ptr -= len2 + 1;
-                    dir = 0;
 
                     continue;
 
