@@ -1,4 +1,4 @@
-﻿using FuzzySharp.PreProcess;
+using FuzzySharp.PreProcess;
 using NUnit.Framework;
 
 namespace FuzzySharp.Test.FuzzyTests
@@ -176,7 +176,7 @@ namespace FuzzySharp.Test.FuzzyTests
         }
 
         [Test]
-        public void TestWRatioUnicodeString()
+        public void TestRatioUnicodeString()
         {
             _s1 = "\u00C1";
             _s2 = "ABCD";
