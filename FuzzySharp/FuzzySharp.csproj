@@ -11,8 +11,8 @@
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <RepositoryType>git</RepositoryType>
         <Company />
-        <Version>2.0.1</Version>
-        <PackageReleaseNotes>Fix issue with Levenshtein.cs where the returned MatchingBlocks were not correct. Credit goes to BobLd (https://github.com/BobLd)</PackageReleaseNotes>
+        <Version>2.0.2</Version>
+        <PackageReleaseNotes>Include source link</PackageReleaseNotes>
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <PackageProjectUrl>https://github.com/JakeBayer/FuzzySharp</PackageProjectUrl>
         <AssemblyVersion>1.0.4.0</AssemblyVersion>
