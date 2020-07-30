@@ -5,7 +5,7 @@ namespace FuzzySharp.PreProcess
 {
     internal class StringPreprocessorFactory
     {
-        private static string pattern = "[^ a-zA-Z0-9]";
+        private static string pattern = "[^ a-zA-Z0-9а-зА-З]";
 
         private static string Default(string input)
         {
