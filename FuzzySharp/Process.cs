@@ -47,6 +47,27 @@ namespace FuzzySharp
         /// <param name="cutoff"></param>
         /// <returns></returns>
         public static IEnumerable<ExtractedResult<T>> ExtractAll<T>(
+            string query, 
+            IEnumerable<T> choices,
+            Func<T, string> processor,
+            IRatioScorer scorer = null,
+            int cutoff = 0)
+        {
+            if (scorer == null) scorer = s_defaultScorer;
+            return ResultExtractor.ExtractWithoutOrder(query, choices, processor, scorer, cutoff);
+        }
+
+        /// <summary>
+        /// Creates a list of ExtractedResult which contain all the choices with
+        /// their corresponding score where higher is more similar
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="choices"></param>
+        /// <param name="processor"></param>
+        /// <param name="scorer"></param>
+        /// <param name="cutoff"></param>
+        /// <returns></returns>
+        public static IEnumerable<ExtractedResult<T>> ExtractAll<T>(
             T query, 
             IEnumerable<T> choices,
             Func<T, string> processor,
@@ -79,6 +100,30 @@ namespace FuzzySharp
             int cutoff = 0)
         {
             if (processor == null) processor = s_defaultStringProcessor;
+            if (scorer == null) scorer = s_defaultScorer;
+            return ResultExtractor.ExtractTop(query, choices, processor, scorer, limit, cutoff);
+        }
+
+
+        /// <summary>
+        /// Creates a sorted list of ExtractedResult  which contain the
+        /// top limit most similar choices
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="choices"></param>
+        /// <param name="processor"></param>
+        /// <param name="scorer"></param>
+        /// <param name="limit"></param>
+        /// <param name="cutoff"></param>
+        /// <returns></returns>
+        public static IEnumerable<ExtractedResult<T>> ExtractTop<T>(
+            string query, 
+            IEnumerable<T> choices,
+            Func<T, string> processor,
+            IRatioScorer scorer = null,
+            int limit = 5, 
+            int cutoff = 0)
+        {
             if (scorer == null) scorer = s_defaultScorer;
             return ResultExtractor.ExtractTop(query, choices, processor, scorer, limit, cutoff);
         }
@@ -140,6 +185,26 @@ namespace FuzzySharp
         /// <param name="cutoff"></param>
         /// <returns></returns>
         public static IEnumerable<ExtractedResult<T>> ExtractSorted<T>(
+            string query,
+            IEnumerable<T> choices,
+            Func<T, string> processor,
+            IRatioScorer scorer = null,
+            int cutoff = 0)
+        {
+            if (scorer == null) scorer = s_defaultScorer;
+            return ResultExtractor.ExtractSorted(query, choices, processor, scorer, cutoff);
+        }
+
+        /// <summary>
+        /// Creates a sorted list of ExtractedResult with the closest matches first
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="choices"></param>
+        /// <param name="processor"></param>
+        /// <param name="scorer"></param>
+        /// <param name="cutoff"></param>
+        /// <returns></returns>
+        public static IEnumerable<ExtractedResult<T>> ExtractSorted<T>(
             T query,
             IEnumerable<T> choices,
             Func<T, string> processor,
@@ -169,6 +234,26 @@ namespace FuzzySharp
             int cutoff = 0)
         {
             if (processor == null) processor = s_defaultStringProcessor;
+            if (scorer == null) scorer       = s_defaultScorer;
+            return ResultExtractor.ExtractOne(query, choices, processor, scorer, cutoff);
+        }
+
+        /// <summary>
+        /// Find the single best match above a score in a list of choices.
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="choices"></param>
+        /// <param name="processor"></param>
+        /// <param name="scorer"></param>
+        /// <param name="cutoff"></param>
+        /// <returns></returns>
+        public static ExtractedResult<T> ExtractOne<T>(
+            string query,
+            IEnumerable<T> choices,
+            Func<T, string> processor,
+            IRatioScorer scorer = null,
+            int cutoff = 0)
+        {
             if (scorer == null) scorer       = s_defaultScorer;
             return ResultExtractor.ExtractOne(query, choices, processor, scorer, cutoff);
         }
