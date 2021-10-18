@@ -29,16 +29,15 @@ namespace FuzzySharp.Test.FuzzyTests
                 {
                     types = s.GetTypes();
                 }
-                catch {}
+                catch { }
                 return types;
             }).ToList();
             var scorerTypes = types.Where(t => scorerType.IsAssignableFrom(t) && !t.IsAbstract && t.IsClass).ToList();
             //var scorerTypes = AppDomain.CurrentDomain.GetAssemblies().SelectMany(s => s.GetTypes()).Where(p => scorerType.IsAssignableFrom(p) && p.IsClass && !p.IsAbstract);
-        
+
 
             MethodInfo getScorerCacheMethodInfo = typeof(ScorerCache).GetMethod("Get");
 
-            string nullString = null;  //Null doesnt seem to be handled by any scorer
             string emptyString = "";
             string whitespaceString = " ";
 
@@ -50,21 +49,22 @@ namespace FuzzySharp.Test.FuzzyTests
                 MethodInfo m = getScorerCacheMethodInfo.MakeGenericMethod(t);
                 IRatioScorer scorer = m.Invoke(this, new object[] { }) as IRatioScorer;
 
-                foreach(string s in nullOrWhitespaceStrings)
+                foreach (string s in nullOrWhitespaceStrings)
                 {
                     System.Diagnostics.Debug.WriteLine($"Testing string '{s}'");
                     try
                     {
                         scorer.Score(s, "TEST");
                     }
-                    catch (InvalidOperationException e)
+                    catch (InvalidOperationException)
                     {
                         Assert.Fail($"{t.Name}.score failed with empty string as first parameter");
                     }
                     try
                     {
                         scorer.Score("TEST", s);
-                    } catch (InvalidOperationException e)
+                    }
+                    catch (InvalidOperationException)
                     {
                         Assert.Fail($"{t.Name}.score failed with empty string as second parameter");
                     }
@@ -72,7 +72,7 @@ namespace FuzzySharp.Test.FuzzyTests
                     {
                         scorer.Score(s, s);
                     }
-                    catch (InvalidOperationException e)
+                    catch (InvalidOperationException)
                     {
                         Assert.Fail($"{t.Name}.score failed with empty string as both parameters");
                     }
@@ -83,6 +83,6 @@ namespace FuzzySharp.Test.FuzzyTests
             }
 
         }
-        
+
     }
 }

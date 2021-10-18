@@ -1,10 +1,15 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace FuzzySharp.SimilarityRatio.Scorer.StrategySensitive
 {
     public abstract class TokenInitialismScorerBase : StrategySensitiveScorerBase
     {
+        public TokenInitialismScorerBase(Func<string, string, int> scorer) : base(scorer)
+        {
+
+        }
         public override int Score(string input1, string input2)
         {
             string shorter;
@@ -13,12 +18,12 @@ namespace FuzzySharp.SimilarityRatio.Scorer.StrategySensitive
             if (input1.Length < input2.Length)
             {
                 shorter = input1;
-                longer  = input2;
+                longer = input2;
             }
             else
             {
                 shorter = input2;
-                longer  = input1;
+                longer = input1;
             }
 
             double lenRatio = ((double)longer.Length) / shorter.Length;

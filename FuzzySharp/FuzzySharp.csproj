@@ -1,23 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFrameworks>netcoreapp2.0;netcoreapp2.1;netstandard1.6;netstandard2.0;netstandard2.1;net45;net46;net461</TargetFrameworks>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Authors>Jacob Bayer</Authors>
-        <Description>Fuzzy string matcher based on FuzzyWuzzy algorithm from SeatGeek</Description>
-        <PackageTags>Fuzzy String Matching Comparison FuzzyWuzzy FuzzySharp</PackageTags>
-        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-        <RepositoryUrl>https://github.com/JakeBayer/FuzzySharp</RepositoryUrl>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <RepositoryType>git</RepositoryType>
-        <Company />
-        <Version>2.0.2</Version>
-        <PackageReleaseNotes>Include source link</PackageReleaseNotes>
-        <PublishRepositoryUrl>true</PublishRepositoryUrl>
-        <PackageProjectUrl>https://github.com/JakeBayer/FuzzySharp</PackageProjectUrl>
-        <AssemblyVersion>1.0.4.0</AssemblyVersion>
-        <FileVersion>1.0.4.0</FileVersion>
-    
+  <PropertyGroup>
+    <TargetFrameworks>net5.0;netcoreapp3.1;netcoreapp3.0;netstandard2.1</TargetFrameworks>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Jacob Bayer</Authors>
+    <Description>Fuzzy string matcher based on FuzzyWuzzy algorithm from SeatGeek</Description>
+    <PackageTags>Fuzzy String Matching Comparison FuzzyWuzzy FuzzySharp</PackageTags>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <RepositoryUrl>https://github.com/JakeBayer/FuzzySharp</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryType>git</RepositoryType>
+    <Company />
+    <Version>2.0.2</Version>
+    <PackageReleaseNotes>Include source link</PackageReleaseNotes>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <PackageProjectUrl>https://github.com/JakeBayer/FuzzySharp</PackageProjectUrl>
+    <AssemblyVersion>1.0.4.0</AssemblyVersion>
+    <FileVersion>1.0.4.0</FileVersion>
+
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
@@ -28,11 +28,8 @@
   </ItemGroup>
 
 
-    <ItemGroup>
-        <Reference Include="System">
-            <HintPath>System</HintPath>
-        </Reference>
-		<None Include="README.md" pack="true" PackagePath="." />
-    </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md" pack="true" PackagePath="." />
+  </ItemGroup>
 
 </Project>

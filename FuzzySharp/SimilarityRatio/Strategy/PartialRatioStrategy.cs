@@ -1,60 +1,67 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using FuzzySharp.Edits;
 
 namespace FuzzySharp.SimilarityRatio.Strategy
 {
-    internal class PartialRatioStrategy
+    internal class PartialRatioStrategy<T> where T : IEquatable<T>
     {
-        public static int Calculate(string input1, string input2)
-        {
-            string shorter;
-            string longer;
+        private readonly ILevenshteinMatchingBlocks<T> _levenshteinMatchingBlocks;
+        private readonly ILevenshteinRatio<T> _levenshteinRatio;
 
+        internal static readonly Func<string, string, int> StringInstance = (input1, input2) => new PartialRatioStrategy<char>().Calculate(input1.AsSpan(), input2.AsSpan());
+        internal static readonly Func<string[], string[], int> StringArrInstance = (input1, input2) => new PartialRatioStrategy<string>().Calculate(input1.AsSpan(), input2.AsSpan());
+
+        internal PartialRatioStrategy() : this(LevenshteinRatio<T>.Instance, LevenshteinMatchingBlocks<T>.Instance)
+        {
+        }
+
+        internal PartialRatioStrategy(ILevenshteinRatio<T> levenshteinRatio, ILevenshteinMatchingBlocks<T> levenshteinMatchingBlocks)
+        {
+            _levenshteinRatio = levenshteinRatio;
+            _levenshteinMatchingBlocks = levenshteinMatchingBlocks;
+        }
+
+        internal int Calculate(ReadOnlySpan<T> input1, ReadOnlySpan<T> input2)
+        {
             if (input1.Length == 0 || input2.Length == 0)
             {
                 return 0;
             }
+            var isInput1LengthLessThanInput2 = input1.Length < input2.Length;
+            var shorter = isInput1LengthLessThanInput2 ? input1 : input2;
+            var longer = isInput1LengthLessThanInput2 ? input2 : input1;
 
-            if (input1.Length < input2.Length)
-            {
-                shorter = input1;
-                longer  = input2;
-            }
-            else
-            {
-                shorter = input2;
-                longer  = input1;
-            }
+            var matchingBlocks = _levenshteinMatchingBlocks.GetMatchingBlocks(shorter, longer);
 
-            MatchingBlock[] matchingBlocks = Levenshtein.GetMatchingBlocks(shorter, longer);
-
-            List<double> scores = new List<double>();
-
+            double? highestRatio = null;
             foreach (var matchingBlock in matchingBlocks)
             {
                 int dist = matchingBlock.DestPos - matchingBlock.SourcePos;
 
                 int longStart = dist > 0 ? dist : 0;
-                int longEnd   = longStart + shorter.Length;
+                int longEnd = longStart + shorter.Length;
 
                 if (longEnd > longer.Length) longEnd = longer.Length;
 
-                string longSubstr = longer.Substring(longStart, longEnd - longStart);
+                var longSubstr = longer.Slice(longStart, longEnd - longStart);
 
-                double ratio = Levenshtein.GetRatio(shorter, longSubstr);
+                double ratio = _levenshteinRatio.GetRatio(shorter, longSubstr);
 
                 if (ratio > .995)
                 {
                     return 100;
                 }
 
-                scores.Add(ratio);
-
+                if (!highestRatio.HasValue)
+                {
+                    highestRatio = ratio;
+                }
+                else
+                {
+                    highestRatio = Math.Max(highestRatio.Value, ratio);
+                }
             }
 
-            return (int)Math.Round(100 * scores.Max());
+            return (int)Math.Round(100 * highestRatio ?? 0);
         }
     }
 }

@@ -5,6 +5,9 @@ namespace FuzzySharp.SimilarityRatio.Scorer.StrategySensitive
 {
     public class TokenInitialismScorer : TokenInitialismScorerBase
     {
-        protected override Func<string, string, int> Scorer => DefaultRatioStrategy.Calculate;
+        public TokenInitialismScorer() : base(DefaultRatioStrategy<char>.StringInstance)
+        {
+
+        }
     }
 }

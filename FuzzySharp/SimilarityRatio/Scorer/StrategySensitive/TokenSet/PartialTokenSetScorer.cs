@@ -5,6 +5,10 @@ namespace FuzzySharp.SimilarityRatio.Scorer.StrategySensitive
 {
     public class PartialTokenSetScorer : TokenSetScorerBase
     {
-        protected override Func<string, string, int> Scorer => PartialRatioStrategy.Calculate;
+        public PartialTokenSetScorer() : base(PartialRatioStrategy<char>.StringInstance)
+        {
+
+        }
+
     }
 }
