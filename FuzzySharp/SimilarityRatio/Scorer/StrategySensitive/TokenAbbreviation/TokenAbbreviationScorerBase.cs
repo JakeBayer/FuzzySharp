@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using FuzzySharp.Utils;
@@ -8,10 +7,6 @@ namespace FuzzySharp.SimilarityRatio.Scorer.StrategySensitive
 {
     public abstract class TokenAbbreviationScorerBase : StrategySensitiveScorerBase
     {
-        public TokenAbbreviationScorerBase(Func<string, string, int> scorer) : base(scorer)
-        {
-
-        }
         public override int Score(string input1, string input2)
         {
             string shorter;
@@ -20,12 +15,12 @@ namespace FuzzySharp.SimilarityRatio.Scorer.StrategySensitive
             if (input1.Length < input2.Length)
             {
                 shorter = input1;
-                longer = input2;
+                longer  = input2;
             }
             else
             {
                 shorter = input2;
-                longer = input1;
+                longer  = input1;
             }
 
             double lenRatio = ((double)longer.Length) / shorter.Length;
@@ -73,10 +68,10 @@ namespace FuzzySharp.SimilarityRatio.Scorer.StrategySensitive
                         sum += score;
                     }
                 }
-                allScores.Add((int)(sum / fewerTokens.Length));
+                allScores.Add((int) (sum / fewerTokens.Length));
             }
-
-            return allScores.Count == 0 ? 0 : allScores.Max();
+            
+            return allScores.Count==0?0:allScores.Max();
         }
 
         /// <summary>

@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using FuzzySharp.Edits;
 
-namespace FuzzySharp.SimilarityRatio.Strategy
+namespace FuzzySharp.SimilarityRatio.Strategy.Generic
 {
-    internal class PartialRatioStrategy
+    internal class PartialRatioStrategy<T> where T : IEquatable<T>
     {
-        public static int Calculate(string input1, string input2)
+        public static int Calculate(T[] input1, T[] input2)
         {
-            string shorter;
-            string longer;
+            T[] shorter;
+            T[] longer;
 
             if (input1.Length == 0 || input2.Length == 0)
             {
@@ -41,7 +41,7 @@ namespace FuzzySharp.SimilarityRatio.Strategy
 
                 if (longEnd > longer.Length) longEnd = longer.Length;
 
-                string longSubstr = longer.Substring(longStart, longEnd - longStart);
+                var longSubstr = longer.Skip(longStart).Take(longEnd - longStart);
 
                 double ratio = Levenshtein.GetRatio(shorter, longSubstr);
 
