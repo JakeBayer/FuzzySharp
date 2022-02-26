@@ -1,25 +1,19 @@
-﻿
-using FuzzySharp.SimilarityRatio;
-using FuzzySharp.SimilarityRatio.Scorer;
+﻿using FuzzySharp.SimilarityRatio.Scorer;
 using NUnit.Framework;
 using System;
 using System.Linq;
-using System.Reflection;
 
 namespace FuzzySharp.Test.FuzzyTests
 {
     [TestFixture]
     public class RegressionTests
     {
-
-
         /// <summary>
         /// Test to ensure that all IRatioScorer implementations handle scoring empty strings & whitespace strings
         /// </summary>
         [Test]
         public void TestScoringEmptyString()
         {
-
             var scorerType = typeof(IRatioScorer);
             var assemblies = AppDomain.CurrentDomain.GetAssemblies().ToList();
             var types = assemblies.SelectMany(s =>
@@ -33,10 +27,6 @@ namespace FuzzySharp.Test.FuzzyTests
                 return types;
             }).ToList();
             var scorerTypes = types.Where(t => scorerType.IsAssignableFrom(t) && !t.IsAbstract && t.IsClass).ToList();
-            //var scorerTypes = AppDomain.CurrentDomain.GetAssemblies().SelectMany(s => s.GetTypes()).Where(p => scorerType.IsAssignableFrom(p) && p.IsClass && !p.IsAbstract);
-
-
-            MethodInfo getScorerCacheMethodInfo = typeof(ScorerCache).GetMethod("Get");
 
             string emptyString = "";
             string whitespaceString = " ";
@@ -46,8 +36,8 @@ namespace FuzzySharp.Test.FuzzyTests
             foreach (Type t in scorerTypes)
             {
                 System.Diagnostics.Debug.WriteLine($"Testing {t.Name}");
-                MethodInfo m = getScorerCacheMethodInfo.MakeGenericMethod(t);
-                IRatioScorer scorer = m.Invoke(this, new object[] { }) as IRatioScorer;
+                var instance = Activator.CreateInstance(t, nonPublic: true);
+                IRatioScorer scorer = (IRatioScorer)t.GetProperty("Instance").GetValue(instance, null);
 
                 foreach (string s in nullOrWhitespaceStrings)
                 {
@@ -76,13 +66,8 @@ namespace FuzzySharp.Test.FuzzyTests
                     {
                         Assert.Fail($"{t.Name}.score failed with empty string as both parameters");
                     }
-
                 }
-
-
             }
-
         }
-
     }
 }

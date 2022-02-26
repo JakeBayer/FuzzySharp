@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using FuzzySharp.SimilarityRatio;
 using FuzzySharp.SimilarityRatio.Scorer.StrategySensitive;
 using NUnit.Framework;
 
@@ -9,36 +8,11 @@ namespace FuzzySharp.Test.FuzzyTests
     [TestFixture]
     public class ProcessTests
     {
-        private string   _s1;
-        private string   _s1A;
-        private string   _s2;
-        private string   _s3;
-        private string   _s4;
-        private string   _s5;
-        private string   _s6;
-        private string[] _cirqueStrings;
         private string[] _baseballStrings;
 
         [SetUp]
         public void Setup()
         {
-            _s1  = "new york mets";
-            _s1A = "new york mets";
-            _s2  = "new YORK mets";
-            _s3  = "the wonderful new york mets";
-            _s4  = "new york mets vs atlanta braves";
-            _s5  = "atlanta braves vs new york mets";
-            _s6  = "new york mets - atlanta braves";
-            _cirqueStrings = new[]
-            {
-                "cirque du soleil - zarkana - las vegas",
-                "cirque du soleil ",
-                "cirque du soleil las vegas",
-                "zarkana las vegas",
-                "las vegas cirque du soleil at the bellagio",
-                "zarakana - cirque du soleil - bellagio"
-            };
-
             _baseballStrings = new[]
             {
                 "new york mets vs chicago cubs",
@@ -52,7 +26,7 @@ namespace FuzzySharp.Test.FuzzyTests
         public void TestGetBestChoice1()
         {
             var query = "new york mets at atlanta braves";
-            var best  = Process.ExtractOne(query, _baseballStrings);
+            var best = Process.ExtractOne(query, _baseballStrings);
             Assert.AreEqual(best.Value, "braves vs mets");
 
         }
@@ -61,7 +35,7 @@ namespace FuzzySharp.Test.FuzzyTests
         public void TestGetBestChoice2()
         {
             var query = "philadelphia phillies at atlanta braves";
-            var best  = Process.ExtractOne(query, _baseballStrings);
+            var best = Process.ExtractOne(query, _baseballStrings);
             Assert.AreEqual(best.Value, _baseballStrings[2]);
 
         }
@@ -70,7 +44,7 @@ namespace FuzzySharp.Test.FuzzyTests
         public void TestGetBestChoice3()
         {
             var query = "atlanta braves at philadelphia phillies";
-            var best  = Process.ExtractOne(query, _baseballStrings);
+            var best = Process.ExtractOne(query, _baseballStrings);
             Assert.AreEqual(best.Value, _baseballStrings[2]);
 
         }
@@ -79,7 +53,7 @@ namespace FuzzySharp.Test.FuzzyTests
         public void TestGetBestChoice4()
         {
             var query = "chicago cubs vs new york mets";
-            var best  = Process.ExtractOne(query, _baseballStrings);
+            var best = Process.ExtractOne(query, _baseballStrings);
             Assert.AreEqual(best.Value, _baseballStrings[0]);
 
         }
@@ -129,7 +103,7 @@ namespace FuzzySharp.Test.FuzzyTests
 
             // now, use the custom scorer
 
-            best = Process.ExtractOne(query, choices, null, ScorerCache.Get<DefaultRatioScorer>());
+            best = Process.ExtractOne(query, choices, null, DefaultRatioScorer.Instance);
             Assert.AreEqual(best.Value, choices[0]);
 
             best = Process.ExtractOne(query, choicesDict.Select(k => k.Value));
@@ -201,69 +175,5 @@ namespace FuzzySharp.Test.FuzzyTests
             var best = Process.ExtractOne(query, choices);
             Assert.AreEqual(best.Value, choices[1]);
         }
-
-//[Test]
-//public void  generate_choices() {
-//            choices = ['a', 'Bb', 'CcC']
-//            for choice in choices {
-//                yield choice
-//        search = 'aaa'
-//        result = [(value, confidence) for value, confidence in
-//                  Process.Extract(search, generate_choices())]
-//        .assertTrue(len(result) > 0)
-
-//    }
-
-//[Test]
-//public void  test_dict_like_Extract() {
-//        """We should be able to use a dict-like object for choices, not only a
-//        dict, and still get dict-like output.
-//        """
-//        try {
-//            from UserDict import UserDict
-//        except ImportError {
-//            from collections import UserDict
-//        choices = UserDict({ 'aa' { 'bb', 'a1' { None})
-//        search = 'aaa'
-//        result = Process.Extract(search, choices)
-//        .assertTrue(len(result) > 0)
-//        for value, confidence, key in result {
-//            .assertTrue(value in choices.values())
-
-//    }
-
-//[Test]
-//public void  test_dedupe() {
-//        """We should be able to use a list-like object for contains_dupes
-//        """
-//        // Test 1
-//        contains_dupes = ['Frodo Baggins', 'Tom Sawyer', 'Bilbo Baggin', 'Samuel L. Jackson', 'F. Baggins', 'Frody Baggins', 'Bilbo Baggins']
-
-//        result = Process.dedupe(contains_dupes)
-//        .assertTrue(len(result) < len(contains_dupes))
-
-//        // Test 2
-//        contains_dupes = ['Tom', 'Dick', 'Harry']
-
-//// we should end up with the same list since no duplicates are contained in the list (e.g. original list is returned)
-//        deduped_list = ['Tom', 'Dick', 'Harry']
-
-//        result = Process.dedupe(contains_dupes)
-//        Assert.AreEqual(result, deduped_list)
-
-//    }
-
-//[Test]
-//public void  test_simplematch() {
-//        basic_string = 'a, b'
-//        match_strings = ['a, b']
-
-//        result = Process.ExtractOne(basic_string, match_strings, scorer=fuzz.ratio)
-//        part_result = Process.ExtractOne(basic_string, match_strings, scorer=fuzz.partial_ratio)
-
-//        Assert.AreEqual(result, ('a, b', 100))
-//        Assert.AreEqual(part_result, ('a, b', 100))
-
-//    }
     }
 }

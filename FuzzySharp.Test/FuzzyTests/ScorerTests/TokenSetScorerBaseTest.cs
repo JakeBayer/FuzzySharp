@@ -1,10 +1,6 @@
-﻿using FuzzySharp.SimilarityRatio;
-using FuzzySharp.SimilarityRatio.Scorer;
+﻿using FuzzySharp.SimilarityRatio.Scorer;
 using FuzzySharp.SimilarityRatio.Scorer.StrategySensitive;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace FuzzySharp.Test.FuzzyTests.ScorerTests
 {
@@ -24,8 +20,8 @@ namespace FuzzySharp.Test.FuzzyTests.ScorerTests
         [SetUp]
         public void SetUp()
         {
-            _scorer = ScorerCache.Get<TokenSetScorer>();
-            _partialScorer = ScorerCache.Get<PartialTokenSetScorer>();
+            _scorer = TokenSetScorer.Instance;
+            _partialScorer = PartialTokenSetScorer.Instance;
         }
 
         [TestCase(fuzzy1, fuzzy1)]

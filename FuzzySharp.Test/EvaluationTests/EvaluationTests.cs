@@ -1,5 +1,4 @@
 ﻿using FuzzySharp.PreProcess;
-using FuzzySharp.SimilarityRatio;
 using FuzzySharp.SimilarityRatio.Scorer.Composite;
 using FuzzySharp.SimilarityRatio.Scorer.StrategySensitive;
 using NUnit.Framework;
@@ -38,11 +37,11 @@ namespace FuzzySharp.Test.EvaluationTests
 
             var h1 = Process.ExtractOne("cowboys", new[] { "Atlanta Falcons", "New York Jets", "New York Giants", "Dallas Cowboys" });
             var h2 = string.Join(", ", Process.ExtractTop("goolge", new[] { "google", "bing", "facebook", "linkedin", "twitter", "googleplus", "bingnews", "plexoogl" }, limit: 3));
-            var h3 = string.Join(", ", Process.ExtractAll("goolge", new [] {"google", "bing", "facebook", "linkedin", "twitter", "googleplus", "bingnews", "plexoogl" }));
+            var h3 = string.Join(", ", Process.ExtractAll("goolge", new[] { "google", "bing", "facebook", "linkedin", "twitter", "googleplus", "bingnews", "plexoogl" }));
             var h4 = string.Join(", ", Process.ExtractAll("goolge", new[] { "google", "bing", "facebook", "linkedin", "twitter", "googleplus", "bingnews", "plexoogl" }, cutoff: 40));
-            var h5 = string.Join(", ", Process.ExtractSorted("goolge", new [] {"google", "bing", "facebook", "linkedin", "twitter", "googleplus", "bingnews", "plexoogl" }));
+            var h5 = string.Join(", ", Process.ExtractSorted("goolge", new[] { "google", "bing", "facebook", "linkedin", "twitter", "googleplus", "bingnews", "plexoogl" }));
 
-            var i1 = Process.ExtractOne("cowboys", new[] { "Atlanta Falcons", "New York Jets", "New York Giants", "Dallas Cowboys" }, s => s, ScorerCache.Get<DefaultRatioScorer>());
+            var i1 = Process.ExtractOne("cowboys", new[] { "Atlanta Falcons", "New York Jets", "New York Giants", "Dallas Cowboys" }, s => s, DefaultRatioScorer.Instance);
 
             var events = new[]
             {
@@ -54,15 +53,15 @@ namespace FuzzySharp.Test.EvaluationTests
 
             var best = Process.ExtractOne(query, events, strings => strings[0]);
 
-            var ratio = ScorerCache.Get<DefaultRatioScorer>();
-            var partial = ScorerCache.Get<PartialRatioScorer>();
-            var tokenSet = ScorerCache.Get<TokenSetScorer>();
-            var partialTokenSet = ScorerCache.Get<PartialTokenSetScorer>();
-            var tokenSort = ScorerCache.Get<TokenSortScorer>();
-            var partialTokenSort = ScorerCache.Get<PartialTokenSortScorer>();
-            var tokenAbbreviation = ScorerCache.Get<TokenAbbreviationScorer>();
-            var partialTokenAbbreviation = ScorerCache.Get<PartialTokenAbbreviationScorer>();
-            var weighted = ScorerCache.Get<WeightedRatioScorer>();
+            var ratio = DefaultRatioScorer.Instance;
+            var partial = PartialRatioScorer.Instance;
+            var tokenSet = TokenSetScorer.Instance;
+            var partialTokenSet = PartialTokenSetScorer.Instance;
+            var tokenSort = TokenSortScorer.Instance;
+            var partialTokenSort = PartialTokenSortScorer.Instance;
+            var tokenAbbreviation = TokenAbbreviationScorer.Instance;
+            var partialTokenAbbreviation = PartialTokenAbbreviationScorer.Instance;
+            var weighted = WeightedRatioScorer.Instance;
         }
 
         [Test]

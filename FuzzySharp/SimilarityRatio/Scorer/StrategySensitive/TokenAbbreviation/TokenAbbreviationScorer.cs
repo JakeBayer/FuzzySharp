@@ -4,9 +4,10 @@ namespace FuzzySharp.SimilarityRatio.Scorer.StrategySensitive
 {
     public class TokenAbbreviationScorer : TokenAbbreviationScorerBase
     {
-        public TokenAbbreviationScorer() : base(DefaultRatioStrategy<char>.StringInstance)
-        {
+        public static readonly IRatioScorer Instance = new TokenAbbreviationScorer();
 
+        private TokenAbbreviationScorer() : base(DefaultRatioStrategy<char>.StringInstance)
+        {
         }
     }
 }

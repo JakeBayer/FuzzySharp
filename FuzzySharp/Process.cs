@@ -10,7 +10,7 @@ namespace FuzzySharp
 {
     public static class Process
     {
-        private static readonly IRatioScorer s_defaultScorer = ScorerCache.Get<WeightedRatioScorer>();
+        private static readonly IRatioScorer s_defaultScorer = WeightedRatioScorer.Instance;
         private static readonly Func<string, string> s_defaultStringProcessor = StringPreprocessorFactory.GetPreprocessor(PreprocessMode.Full);
 
         #region ExtractAll

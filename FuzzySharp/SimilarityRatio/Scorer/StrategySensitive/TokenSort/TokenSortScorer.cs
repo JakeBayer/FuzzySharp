@@ -1,13 +1,13 @@
 ﻿using FuzzySharp.SimilarityRatio.Strategy;
-using System;
 
 namespace FuzzySharp.SimilarityRatio.Scorer.StrategySensitive
 {
     public class TokenSortScorer : TokenSortScorerBase
     {
-        public TokenSortScorer() : base(DefaultRatioStrategy<char>.StringInstance)
-        {
+        public static readonly IRatioScorer Instance = new TokenSortScorer();
 
-        }        
+        private TokenSortScorer() : base(DefaultRatioStrategy<char>.StringInstance)
+        {
+        }
     }
 }
