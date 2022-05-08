@@ -4,6 +4,8 @@ namespace FuzzySharp.SimilarityRatio.Strategy
 {
     internal class DefaultRatioStrategy
     {
+        public static readonly Func<string, string, int> CacheCalculate = Calculate;
+
         public static int Calculate(string input1, string input2)
         {
             if (input1.Length == 0 || input2.Length == 0)

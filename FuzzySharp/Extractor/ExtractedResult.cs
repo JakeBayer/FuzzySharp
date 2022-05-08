@@ -25,7 +25,7 @@ namespace FuzzySharp.Extractor
 
         public int CompareTo(ExtractedResult<T> other)
         {
-            return Comparer<int>.Default.Compare(this.Score, other.Score);
+            return Score.CompareTo(other.Score);
         }
 
         public override string ToString()

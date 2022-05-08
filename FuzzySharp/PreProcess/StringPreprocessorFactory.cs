@@ -5,11 +5,14 @@ namespace FuzzySharp.PreProcess
 {
     internal class StringPreprocessorFactory
     {
-        private static string pattern = "[^ a-zA-Z0-9]";
+        private static readonly Regex FullMatchRegex = new Regex("[^ a-zA-Z0-9]", RegexOptions.Compiled);
+        
+        private static readonly Func<string, string> CacheDefault = Default;
+        private static readonly Func<string, string> Ident = x => x;
 
         private static string Default(string input)
         {
-            input = Regex.Replace(input, pattern, " ");
+            input = FullMatchRegex.Replace(input, " ");;
             input = input.ToLower();
 
             return input.Trim();
@@ -20,9 +23,9 @@ namespace FuzzySharp.PreProcess
             switch (mode)
             {
                 case PreprocessMode.Full:
-                    return Default;
+                    return CacheDefault;
                 case PreprocessMode.None:
-                    return s => s;
+                    return Ident;
                 default:
                     throw new InvalidOperationException($"Invalid string preprocessor mode: {mode}");
             }

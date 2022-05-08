@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Runtime.CompilerServices;
 using FuzzySharp.SimilarityRatio.Scorer;
 
 namespace FuzzySharp.SimilarityRatio
 {
     public static class ScorerCache
     {
-        private static readonly ConcurrentDictionary<Type, IRatioScorer> s_scorerCache = new ConcurrentDictionary<Type, IRatioScorer>();
-        public static IRatioScorer Get<T>() where T : IRatioScorer, new()
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IRatioScorer Get<T>() where T : IRatioScorer, new() => GenericCache<T>.Instance;
+
+        private static class GenericCache<T> 
+            where T : IRatioScorer, new()
         {
-            return s_scorerCache.GetOrAdd(typeof(T), new T());
+            public static readonly T Instance = new T();
         }
     }
 }
