@@ -7,6 +7,8 @@ namespace FuzzySharp.SimilarityRatio.Strategy.Generic
 {
     internal class PartialRatioStrategy<T> where T : IEquatable<T>
     {
+        public static readonly Func<T[], T[], int> CacheCalculate = Calculate;
+        
         public static int Calculate(T[] input1, T[] input2)
         {
             T[] shorter;
