@@ -1,19 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace FuzzySharp.Extractor
 {
-    public class ExtractedResult<T> : IComparable<ExtractedResult<T>> 
+    public struct ExtractedResult<T> : IComparable<ExtractedResult<T>>
     {
+        public T Value { get; }
+        public int Score { get; }
+        public int Index { get; }
 
-        public readonly T Value;
-        public readonly int Score;
-        public readonly int Index;
-
-        public ExtractedResult(T value, int score)
+        public ExtractedResult(T value, int score) : this(value, score, 0)
         {
-            Value = value;
-            Score = score;
         }
 
         public ExtractedResult(T value, int score, int index)
