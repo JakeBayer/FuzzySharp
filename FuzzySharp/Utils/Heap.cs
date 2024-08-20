@@ -11,13 +11,11 @@ namespace FuzzySharp.Utils
         private const int GrowFactor      = 2;
         private const int MinGrow         = 1;
 
-        private int _capacity = InitialCapacity;
         private T[] _heap     = new T[InitialCapacity];
-        private int _tail     = 0;
 
-        public int Count => _tail;
+        public int Count { get; private set; }
 
-        public int Capacity => _capacity;
+        public int Capacity { get; private set; } = InitialCapacity;
 
         protected          Comparer<T> Comparer { get; }
         protected abstract bool        Dominates(T x, T y);
@@ -26,7 +24,7 @@ namespace FuzzySharp.Utils
         {
         }
 
-        protected Heap(Comparer<T> comparer) : this(Enumerable.Empty<T>(), comparer)
+        protected Heap(Comparer<T> comparer) : this([], comparer)
         {
         }
 
@@ -37,19 +35,18 @@ namespace FuzzySharp.Utils
 
         protected Heap(IEnumerable<T> collection, Comparer<T> comparer)
         {
-            if (collection == null) throw new ArgumentNullException(nameof(collection));
-
             Comparer = comparer ?? throw new ArgumentNullException(nameof(comparer));
+            _ = collection ?? throw new ArgumentNullException(nameof(collection));
 
             foreach (var item in collection)
             {
                 if (Count == Capacity)
                     Grow();
 
-                _heap[_tail++] = item;
+                _heap[Count++] = item;
             }
 
-            for (int i = Parent(_tail - 1); i >= 0; i--)
+            for (int i = Parent(Count - 1); i >= 0; i--)
                 BubbleDown(i);
         }
 
@@ -58,8 +55,8 @@ namespace FuzzySharp.Utils
             if (Count == Capacity)
                 Grow();
 
-            _heap[_tail++] = item;
-            BubbleUp(_tail - 1);
+            _heap[Count++] = item;
+            BubbleUp(Count - 1);
         }
 
         private void BubbleUp(int i)
@@ -83,8 +80,8 @@ namespace FuzzySharp.Utils
         {
             if (Count == 0) throw new InvalidOperationException("Heap is empty");
             T ret = _heap[0];
-            _tail--;
-            Swap(_tail, 0);
+            Count--;
+            Swap(Count, 0);
             BubbleDown(0);
             return ret;
         }
@@ -93,7 +90,7 @@ namespace FuzzySharp.Utils
         {
             while (true)
             {
-                int dominatingNode = Dominating(i);
+                var dominatingNode = Dominating(i);
                 if (dominatingNode == i) return;
                 Swap(i, dominatingNode);
                 i = dominatingNode;
@@ -111,17 +108,15 @@ namespace FuzzySharp.Utils
 
         private int GetDominating(int newNode, int dominatingNode)
         {
-            if (newNode < _tail && !Dominates(_heap[dominatingNode], _heap[newNode]))
+            if (newNode < Count && !Dominates(_heap[dominatingNode], _heap[newNode]))
                 return newNode;
-            else
-                return dominatingNode;
+
+            return dominatingNode;
         }
 
         private void Swap(int i, int j)
         {
-            T tmp = _heap[i];
-            _heap[i] = _heap[j];
-            _heap[j] = tmp;
+            (_heap[i], _heap[j]) = (_heap[j], _heap[i]);
         }
 
         private static int Parent(int i)
@@ -141,11 +136,11 @@ namespace FuzzySharp.Utils
 
         private void Grow()
         {
-            int newCapacity = _capacity * GrowFactor + MinGrow;
+            int newCapacity = Capacity * GrowFactor + MinGrow;
             var newHeap     = new T[newCapacity];
-            Array.Copy(_heap, newHeap, _capacity);
+            Array.Copy(_heap, newHeap, Capacity);
             _heap     = newHeap;
-            _capacity = newCapacity;
+            Capacity = newCapacity;
         }
 
         public IEnumerator<T> GetEnumerator()

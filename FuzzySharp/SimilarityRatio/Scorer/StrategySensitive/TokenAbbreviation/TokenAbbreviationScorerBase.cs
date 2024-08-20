@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
+﻿using System;
+using System.Collections.Generic;
+using FuzzySharp.Extensions;
 using FuzzySharp.Utils;
 
 namespace FuzzySharp.SimilarityRatio.Scorer.StrategySensitive
@@ -23,25 +23,25 @@ namespace FuzzySharp.SimilarityRatio.Scorer.StrategySensitive
                 longer  = input1;
             }
 
-            double lenRatio = ((double)longer.Length) / shorter.Length;
+            double lenRatio = (double)longer.Length / shorter.Length;
 
             // if longer isn't at least 1.5 times longer than the other, then its probably not an abbreviation
             if (lenRatio < 1.5) return 0;
 
             // numbers can't be abbreviations for other numbers, though that would be hilarious. "Yes, 4 - as in 4,238"
-            var tokensLonger = Regex.Matches(longer, @"[a-zA-Z]+").Cast<Match>().Select(m => m.Value).ToArray();
-            var tokensShorter = Regex.Matches(shorter, @"[a-zA-Z]+").Cast<Match>().Select(m => m.Value).ToArray();
+            var tokensLonger = longer.ExtractTokens();
+            var tokensShorter = shorter.ExtractTokens();
 
             // more than 4 tokens and it's probably not an abbreviation (and could get costly)
-            if (tokensShorter.Length > 4)
+            if (tokensShorter.Count > 4)
             {
                 return 0;
             }
 
-            string[] moreTokens;
-            string[] fewerTokens;
+            List<string> moreTokens;
+            List<string> fewerTokens;
 
-            if (tokensLonger.Length > tokensShorter.Length)
+            if (tokensLonger.Count > tokensShorter.Count)
             {
                 moreTokens = tokensLonger;
                 fewerTokens = tokensShorter;
@@ -52,26 +52,31 @@ namespace FuzzySharp.SimilarityRatio.Scorer.StrategySensitive
                 fewerTokens = tokensLonger;
             }
 
-            var allPermutations = moreTokens.PermutationsOfSize(fewerTokens.Length);
+            var allPermutations = moreTokens.PermutationsOfSize(fewerTokens.Count);
 
-            List<int> allScores = new List<int>();
+            int maxScore = 0;
+
             foreach (var permutation in allPermutations)
             {
                 double sum = 0;
-                for (int i = 0; i < fewerTokens.Length; i++)
+                for (int i = 0; i < fewerTokens.Count; i++)
                 {
                     var i1 = permutation[i];
                     var i2 = fewerTokens[i];
-                    if (StringContainsInOrder(i1, i2)) // must be at least twice as long
+                    if (StringContainsInOrder(i1.AsSpan(), i2.AsSpan())) // must be at least twice as long
                     {
                         var score = Scorer(i1, i2);
                         sum += score;
                     }
                 }
-                allScores.Add((int) (sum / fewerTokens.Length));
+                var avgScore = (int) (sum / fewerTokens.Count);
+                if(avgScore > maxScore)
+                {
+                    maxScore = avgScore;
+                }
             }
             
-            return allScores.Count==0?0:allScores.Max();
+            return maxScore;
         }
 
         /// <summary>
@@ -80,7 +85,7 @@ namespace FuzzySharp.SimilarityRatio.Scorer.StrategySensitive
         /// <param name="s1"></param>
         /// <param name="s2"></param>
         /// <returns></returns>
-        private bool StringContainsInOrder(string s1, string s2)
+        private static bool StringContainsInOrder(ReadOnlySpan<char> s1, ReadOnlySpan<char> s2)
         {
             if (s1.Length < s2.Length) return false;
             int s2_idx = 0;

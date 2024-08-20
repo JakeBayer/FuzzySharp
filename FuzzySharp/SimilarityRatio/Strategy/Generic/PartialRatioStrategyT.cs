@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using FuzzySharp.Edits;
 
 namespace FuzzySharp.SimilarityRatio.Strategy.Generic
 {
-    internal class PartialRatioStrategy<T> where T : IEquatable<T>
+    internal static class PartialRatioStrategy<T> where T : IEquatable<T>
     {
         public static int Calculate(T[] input1, T[] input2)
         {
@@ -30,7 +28,7 @@ namespace FuzzySharp.SimilarityRatio.Strategy.Generic
 
             MatchingBlock[] matchingBlocks = Levenshtein.GetMatchingBlocks(shorter, longer);
 
-            List<double> scores = new List<double>();
+            double maxScore = 0;
 
             foreach (var matchingBlock in matchingBlocks)
             {
@@ -41,20 +39,22 @@ namespace FuzzySharp.SimilarityRatio.Strategy.Generic
 
                 if (longEnd > longer.Length) longEnd = longer.Length;
 
-                var longSubstr = longer.Skip(longStart).Take(longEnd - longStart);
+                var longSubstr = longer.AsSpan()[longStart..longEnd];
 
-                double ratio = Levenshtein.GetRatio(shorter, longSubstr);
+                double ratio = Levenshtein.GetRatio<T>(shorter.AsSpan(), longSubstr);
 
                 if (ratio > .995)
                 {
                     return 100;
                 }
 
-                scores.Add(ratio);
-
+                if (ratio > maxScore)
+                {
+                    maxScore = ratio;
+                }
             }
 
-            return (int)Math.Round(100 * scores.Max());
+            return (int)Math.Round(100 * maxScore);
         }
     }
 }

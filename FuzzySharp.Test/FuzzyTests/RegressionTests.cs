@@ -12,43 +12,37 @@ namespace FuzzySharp.Test.FuzzyTests
     public class RegressionTests
     {
 
-
         /// <summary>
         /// Test to ensure that all IRatioScorer implementations handle scoring empty strings & whitespace strings
         /// </summary>
         [Test]
         public void TestScoringEmptyString()
         {
-
             var scorerType = typeof(IRatioScorer);
             var assemblies = AppDomain.CurrentDomain.GetAssemblies().ToList();
             var types = assemblies.SelectMany(s =>
             {
-                Type[] types = new Type[] { }; ;
                 try
                 {
-                    types = s.GetTypes();
+                    return s.GetTypes();
                 }
                 catch {}
-                return types;
+                return [];
             }).ToList();
             var scorerTypes = types.Where(t => scorerType.IsAssignableFrom(t) && !t.IsAbstract && t.IsClass).ToList();
-            //var scorerTypes = AppDomain.CurrentDomain.GetAssemblies().SelectMany(s => s.GetTypes()).Where(p => scorerType.IsAssignableFrom(p) && p.IsClass && !p.IsAbstract);
-        
-
-            MethodInfo getScorerCacheMethodInfo = typeof(ScorerCache).GetMethod("Get");
-
+            
             string nullString = null;  //Null doesnt seem to be handled by any scorer
             string emptyString = "";
             string whitespaceString = " ";
 
-            string[] nullOrWhitespaceStrings = { emptyString, whitespaceString };
+            string[] nullOrWhitespaceStrings = [emptyString, whitespaceString];
+            MethodInfo getScorerCacheMethodInfo = typeof(ScorerCache).GetMethod("Get");
 
-            foreach (Type t in scorerTypes)
+            foreach (var t in scorerTypes)
             {
                 System.Diagnostics.Debug.WriteLine($"Testing {t.Name}");
                 MethodInfo m = getScorerCacheMethodInfo.MakeGenericMethod(t);
-                IRatioScorer scorer = m.Invoke(this, new object[] { }) as IRatioScorer;
+                IRatioScorer scorer = m.Invoke(this, []) as IRatioScorer;
 
                 foreach(string s in nullOrWhitespaceStrings)
                 {
@@ -78,7 +72,6 @@ namespace FuzzySharp.Test.FuzzyTests
                     }
 
                 }
-
 
             }
 

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Text.RegularExpressions;
+﻿using FuzzySharp.Extensions;
 
 namespace FuzzySharp.SimilarityRatio.Scorer.StrategySensitive
 {
@@ -8,8 +6,8 @@ namespace FuzzySharp.SimilarityRatio.Scorer.StrategySensitive
     {
         public override int Score(string input1, string input2)
         {
-            var sorted1 = String.Join(" ", Regex.Split(input1, @"\s+").Where(s => s.Any()).OrderBy(s => s)).Trim();
-            var sorted2 = String.Join(" ", Regex.Split(input2, @"\s+").Where(s => s.Any()).OrderBy(s => s)).Trim();
+            var sorted1 = input1.NormalizeSpacesAndSort();
+            var sorted2 = input2.NormalizeSpacesAndSort();
 
             return Scorer(sorted1, sorted2);
         }

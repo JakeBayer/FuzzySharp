@@ -36,20 +36,20 @@ namespace FuzzySharp.Test.EvaluationTests
 
 
 
-            var h1 = Process.ExtractOne("cowboys", new[] { "Atlanta Falcons", "New York Jets", "New York Giants", "Dallas Cowboys" });
-            var h2 = string.Join(", ", Process.ExtractTop("goolge", new[] { "google", "bing", "facebook", "linkedin", "twitter", "googleplus", "bingnews", "plexoogl" }, limit: 3));
-            var h3 = string.Join(", ", Process.ExtractAll("goolge", new [] {"google", "bing", "facebook", "linkedin", "twitter", "googleplus", "bingnews", "plexoogl" }));
-            var h4 = string.Join(", ", Process.ExtractAll("goolge", new[] { "google", "bing", "facebook", "linkedin", "twitter", "googleplus", "bingnews", "plexoogl" }, cutoff: 40));
-            var h5 = string.Join(", ", Process.ExtractSorted("goolge", new [] {"google", "bing", "facebook", "linkedin", "twitter", "googleplus", "bingnews", "plexoogl" }));
+            var h1 = Process.ExtractOne("cowboys", ["Atlanta Falcons", "New York Jets", "New York Giants", "Dallas Cowboys"]);
+            var h2 = string.Join(", ", Process.ExtractTop("goolge", ["google", "bing", "facebook", "linkedin", "twitter", "googleplus", "bingnews", "plexoogl"], limit: 3));
+            var h3 = string.Join(", ", Process.ExtractAll("goolge", ["google", "bing", "facebook", "linkedin", "twitter", "googleplus", "bingnews", "plexoogl"]));
+            var h4 = string.Join(", ", Process.ExtractAll("goolge", ["google", "bing", "facebook", "linkedin", "twitter", "googleplus", "bingnews", "plexoogl"], cutoff: 40));
+            var h5 = string.Join(", ", Process.ExtractSorted("goolge", ["google", "bing", "facebook", "linkedin", "twitter", "googleplus", "bingnews", "plexoogl"]));
 
-            var i1 = Process.ExtractOne("cowboys", new[] { "Atlanta Falcons", "New York Jets", "New York Giants", "Dallas Cowboys" }, s => s, ScorerCache.Get<DefaultRatioScorer>());
+            var i1 = Process.ExtractOne("cowboys", ["Atlanta Falcons", "New York Jets", "New York Giants", "Dallas Cowboys"], s => s, ScorerCache.Get<DefaultRatioScorer>());
 
-            var events = new[]
-            {
-                new[] { "chicago cubs vs new york mets", "CitiField", "2011-05-11", "8pm" },
-                new[] { "new york yankees vs boston red sox", "Fenway Park", "2011-05-11", "8pm" },
-                new[] { "atlanta braves vs pittsburgh pirates", "PNC Park", "2011-05-11", "8pm" },
-            };
+            string[][] events =
+            [
+                ["chicago cubs vs new york mets", "CitiField", "2011-05-11", "8pm"],
+                ["new york yankees vs boston red sox", "Fenway Park", "2011-05-11", "8pm"],
+                ["atlanta braves vs pittsburgh pirates", "PNC Park", "2011-05-11", "8pm"]
+            ];
             var query = new[] { "new york mets vs chicago cubs", "CitiField", "2017-03-19", "8pm" };
 
             var best = Process.ExtractOne(query, events, strings => strings[0]);

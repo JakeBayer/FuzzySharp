@@ -2,9 +2,6 @@
 using FuzzySharp.SimilarityRatio.Scorer;
 using FuzzySharp.SimilarityRatio.Scorer.StrategySensitive;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace FuzzySharp.Test.FuzzyTests.ScorerTests
 {

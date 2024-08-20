@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29806.167
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FuzzySharp", "FuzzySharp\FuzzySharp.csproj", "{348B90DA-DA44-45AD-B857-D3A69D05AE46}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuzzySharp.Test", "FuzzySharp.Test\FuzzySharp.Test.csproj", "{48F4C7CB-E669-410C-A455-DE3330347807}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FuzzySharp.Test", "FuzzySharp.Test\FuzzySharp.Test.csproj", "{48F4C7CB-E669-410C-A455-DE3330347807}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuzzySharp.Benchmarks", "FuzzySharp.Benchmarks\FuzzySharp.Benchmarks.csproj", "{480CAE39-ACA7-411A-BF6B-72E61ED6E129}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{48F4C7CB-E669-410C-A455-DE3330347807}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48F4C7CB-E669-410C-A455-DE3330347807}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{48F4C7CB-E669-410C-A455-DE3330347807}.Release|Any CPU.Build.0 = Release|Any CPU
+		{480CAE39-ACA7-411A-BF6B-72E61ED6E129}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{480CAE39-ACA7-411A-BF6B-72E61ED6E129}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{480CAE39-ACA7-411A-BF6B-72E61ED6E129}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{480CAE39-ACA7-411A-BF6B-72E61ED6E129}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 namespace FuzzySharp.SimilarityRatio.Scorer.Composite
 {
@@ -38,16 +37,12 @@ namespace FuzzySharp.SimilarityRatio.Scorer.Composite
                 double partialSor = Fuzz.TokenSortRatio(input1, input2) * unbaseScale * partialScale;
                 double partialSet = Fuzz.TokenSetRatio(input1, input2) * unbaseScale * partialScale;
 
-                return (int) Math.Round(new[] { baseRatio, partial, partialSor, partialSet }.Max());
+                return (int) Math.Round(Math.Max(baseRatio, Math.Max(partial, Math.Max(partialSor, partialSet))));
             }
-            else
-            {
-                double tokenSort = Fuzz.TokenSortRatio(input1, input2) * unbaseScale;
-                double tokenSet  = Fuzz.TokenSetRatio(input1, input2) * unbaseScale;
 
-                return (int) Math.Round(new[] { baseRatio, tokenSort, tokenSet }.Max());
-            }
+            double tokenSort = Fuzz.TokenSortRatio(input1, input2) * unbaseScale;
+            double tokenSet  = Fuzz.TokenSetRatio(input1, input2) * unbaseScale;
+            return (int) Math.Round(Math.Max(baseRatio, Math.Max(tokenSort, tokenSet)));
         }
-
     }
 }

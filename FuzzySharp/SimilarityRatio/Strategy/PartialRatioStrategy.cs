@@ -1,36 +1,34 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using FuzzySharp.Edits;
 
 namespace FuzzySharp.SimilarityRatio.Strategy
 {
-    internal class PartialRatioStrategy
+    internal static class PartialRatioStrategy
     {
         public static int Calculate(string input1, string input2)
         {
-            string shorter;
-            string longer;
-
             if (input1.Length == 0 || input2.Length == 0)
             {
                 return 0;
             }
 
+            ReadOnlySpan<char> shorter;
+            ReadOnlySpan<char> longer;
+
             if (input1.Length < input2.Length)
             {
-                shorter = input1;
-                longer  = input2;
+                shorter = input1.AsSpan();
+                longer  = input2.AsSpan();
             }
             else
             {
-                shorter = input2;
-                longer  = input1;
+                shorter = input2.AsSpan();
+                longer  = input1.AsSpan();
             }
 
             MatchingBlock[] matchingBlocks = Levenshtein.GetMatchingBlocks(shorter, longer);
 
-            List<double> scores = new List<double>();
+            double maxScore = 0;
 
             foreach (var matchingBlock in matchingBlocks)
             {
@@ -41,7 +39,7 @@ namespace FuzzySharp.SimilarityRatio.Strategy
 
                 if (longEnd > longer.Length) longEnd = longer.Length;
 
-                string longSubstr = longer.Substring(longStart, longEnd - longStart);
+                var longSubstr = longer[longStart..longEnd];
 
                 double ratio = Levenshtein.GetRatio(shorter, longSubstr);
 
@@ -50,11 +48,13 @@ namespace FuzzySharp.SimilarityRatio.Strategy
                     return 100;
                 }
 
-                scores.Add(ratio);
-
+                if (ratio > maxScore)
+                {
+                    maxScore = ratio;
+                }
             }
 
-            return (int)Math.Round(100 * scores.Max());
+            return (int)Math.Round(100 * maxScore);
         }
     }
 }

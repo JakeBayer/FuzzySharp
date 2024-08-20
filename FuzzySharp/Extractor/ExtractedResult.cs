@@ -34,7 +34,7 @@ namespace FuzzySharp.Extractor
             {
                 return $"(string: {Value}, score: {Score}, index: {Index})";
             }
-            return $"(value: {Value.ToString()}, score: {Score}, index: {Index})";
+            return $"(value: {Value}, score: {Score}, index: {Index})";
         }
     }
 }

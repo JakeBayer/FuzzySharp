@@ -15,7 +15,7 @@ namespace FuzzySharp.Utils
 
         public List<T> PermutationAt(long i)
         {
-            var set = new List<T>(_set.OrderBy(e => e).ToList());
+            var set = new List<T>(_set.OrderBy(e => e));
             for (long j = 0; j < i - 1; j++)
             {
                 NextPermutation(set);
@@ -62,22 +62,22 @@ namespace FuzzySharp.Utils
 
     public static class Permutation
     {
-        public static List<List<T>> AllPermutations<T>(this IEnumerable<T> seed)
+        private static IEnumerable<List<T>> AllPermutations<T>(this IEnumerable<T> seed)
         {
             var set = new List<T>(seed);
-            return Permute(set, 0, set.Count - 1).ToList();
+            return Permute(set, 0, set.Count - 1);
         }
 
-        public static List<List<T>> PermutationsOfSize<T>(this IEnumerable<T> seed, int size)
+        public static IEnumerable<List<T>> PermutationsOfSize<T>(this List<T> seed, int size)
         {
-            if (seed.Count() < size)
-            {
-                return new List<List<T>>();
-            }
-            return seed.PermutationsOfSize(new List<T>(), size).ToList();
+            var result = seed.Count < size 
+                ? [] 
+                : seed.PermutationsOfSize([], size);
+
+            return result;
         }
 
-        private static IEnumerable<List<T>> PermutationsOfSize<T>(this IEnumerable<T> seed, List<T> set, int size)
+        private static IEnumerable<List<T>> PermutationsOfSize<T>(this List<T> seed, List<T> set, int size)
         {
             if (size == 0)
             {
@@ -85,17 +85,16 @@ namespace FuzzySharp.Utils
                 {
                     yield return permutation;
                 }
+
+                yield break;
             }
-            else
+
+            for (int i = 0; i < seed.Count; i++)
             {
-                var seedAsList = seed.ToList();
-                for (int i = 0; i < seedAsList.Count; i++)
+                var newSet = new List<T>(set) { seed[i] };
+                foreach (var permutation in seed.Skip(i + 1).ToList().PermutationsOfSize(newSet, size - 1))
                 {
-                    var newSet = new List<T>(set) { seedAsList[i] };
-                    foreach (var permutation in seedAsList.Skip(i + 1).PermutationsOfSize(newSet, size - 1))
-                    {
-                        yield return permutation;
-                    }
+                    yield return permutation;
                 }
             }
         }
@@ -104,7 +103,7 @@ namespace FuzzySharp.Utils
         {
             if (start == end)
             {
-                yield return new List<T>(set);
+                yield return [..set];
             }
             else
             {
@@ -122,9 +121,7 @@ namespace FuzzySharp.Utils
 
         private static void Swap<T>(List<T> set, int a, int b)
         {
-            var temp = set[a];
-            set[a] = set[b];
-            set[b] = temp;
+            (set[a], set[b]) = (set[b], set[a]);
         }
 
         public static IEnumerable<List<T>> Cycles<T>(IEnumerable<T> seed)
@@ -132,8 +129,8 @@ namespace FuzzySharp.Utils
             var set = new LinkedList<T>(seed);
             for (int i = 0; i < set.Count; i++)
             {
-                yield return new List<T>(set);
-                var top = set.First();
+                yield return [..set];
+                var top = set.First!;
                 set.RemoveFirst();
                 set.AddLast(top);
             }

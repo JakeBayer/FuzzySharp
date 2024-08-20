@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
+using FuzzySharp.Extensions;
 
 namespace FuzzySharp.SimilarityRatio.Scorer.StrategySensitive
 {
@@ -9,19 +9,36 @@ namespace FuzzySharp.SimilarityRatio.Scorer.StrategySensitive
     {
         public override int Score(string input1, string input2)
         {
-            var tokens1 = new HashSet<string>(Regex.Split(input1, @"\s+").Where(s => s.Any()));
-            var tokens2 = new HashSet<string>(Regex.Split(input2, @"\s+").Where(s => s.Any()));
+            var tokens1 = new HashSet<string>(input1.SplitByAnySpace());
+            var tokens2 = new HashSet<string>(input2.SplitByAnySpace());
 
-            var sortedIntersection = String.Join(" ", tokens1.Intersect(tokens2).OrderBy(s => s)).Trim();
-            var sortedDiff1To2     = (sortedIntersection + " " + String.Join(" ", tokens1.Except(tokens2).OrderBy(s => s))).Trim();
-            var sortedDiff2To1     = (sortedIntersection + " " + String.Join(" ", tokens2.Except(tokens1).OrderBy(s => s))).Trim();
+            var intersection = GetIntersectionAndExcept(tokens1, tokens2);
 
-            return new[]
+            var sortedIntersection = string.Join(" ", intersection.OrderBy(s => s));
+            var sortedDiff1To2     = (sortedIntersection + " " + string.Join(" ", tokens1.OrderBy(s => s))).Trim();
+            var sortedDiff2To1     = (sortedIntersection + " " + string.Join(" ", tokens2.OrderBy(s => s))).Trim();
+
+            var score1 = Scorer(sortedIntersection, sortedDiff1To2);
+            var score2 = Scorer(sortedIntersection, sortedDiff2To1);
+            var score3 = Scorer(sortedDiff1To2, sortedDiff2To1);
+            
+            return Math.Max(score1, Math.Max(score2, score3));
+        }
+
+        private static List<T> GetIntersectionAndExcept<T>(HashSet<T> first, HashSet<T> second)
+        {
+            List<T> intersection = [];
+
+            foreach (var item in first.ToArray())
             {
-                Scorer(sortedIntersection, sortedDiff1To2),
-                Scorer(sortedIntersection, sortedDiff2To1),
-                Scorer(sortedDiff1To2,     sortedDiff2To1)
-            }.Max();
+                if (second.Remove(item))
+                {
+                    first.Remove(item);
+                    intersection.Add(item);
+                }
+            }
+
+            return intersection;
         }
     }
 }
